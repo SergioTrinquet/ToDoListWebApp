@@ -50,35 +50,6 @@
         </tr>
     </thead>
     <tbody id="body-table-index">
-@* @foreach (var item in Model) {
-        <tr>
-            <td class="@HtmlHelpers.setCSSclassPriorite(item.Priorite)">
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Statut)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateLimite)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Categorie)
-            </td>
-            <td>
-                @{var creationOuModif = HtmlHelpers.FormatLibelleDateCreaModif(item.DateCreation, item.DerniereModification);}
-                <div class="small-libelle">@creationOuModif.verb</div>
-                <div>@creationOuModif.date</div>
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-} *@
-
-        @Html.Partial("./Partials/_IndexTable", Model);
+        @Html.Partial("./Partials/_IndexTable", Model)
     </tbody>
 </table>
