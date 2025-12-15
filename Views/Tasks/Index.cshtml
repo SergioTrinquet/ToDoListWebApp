@@ -1,0 +1,84 @@
+﻿@using ToDoListWebApp.Helpers
+@using static ToDoListWebApp.Models.DTO.UtilityObjects
+@model IEnumerable<ToDoListWebApp.Models.DomainModels.Task>
+
+@{
+    ViewData["Title"] = "To do list";
+}
+
+<div class="head-index">
+    <h1>Ma liste de trucs à faire</h1>
+    <a class="bt-add-task" asp-action="Create">
+        Créer une nouvelle tâche
+        <span class="material-symbols-rounded">add_circle</span>
+    </a> 
+</div>
+
+<div class="filters-and-sort">
+    <span>Classer par :</span>
+    <select id="sortList">
+        <option value="-1">ordre des tâches créées</option>
+    </select>
+</div>
+
+<table class="table table--index">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statut)
+            </th>
+
+            @* <th>@Html.DisplayNameFor(model => model.DateCreation)</th>
+            <th>@Html.DisplayNameFor(model => model.DerniereModification)</th> *@
+
+            <th id="Nom">
+                @Html.DisplayNameFor(model => model.Nom)
+            </th>
+            @* !!!!  A METTRE SEULEMENT DANS PAGE Détails !!!! *@
+            @* <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.DateLimite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categorie)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="body-table-index">
+@* @foreach (var item in Model) {
+        <tr>
+            <td class="@HtmlHelpers.setCSSclassPriorite(item.Priorite)">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Statut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateLimite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categorie)
+            </td>
+            <td>
+                @{var creationOuModif = HtmlHelpers.FormatLibelleDateCreaModif(item.DateCreation, item.DerniereModification);}
+                <div class="small-libelle">@creationOuModif.verb</div>
+                <div>@creationOuModif.date</div>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+} *@
+
+        @Html.Partial("./Partials/_IndexTable", Model);
+    </tbody>
+</table>
