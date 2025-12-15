@@ -3,7 +3,7 @@
 :root {
     --body-bgcolor: #f2f2f2;
     --button-bg-color: #0093dd;
-    --radius-td: 10px;
+    --radius-td: 6px;
 }
 
 
@@ -41,9 +41,15 @@ body {
 }
 
 
-
 /*custom code*/
 body {
+    font-family: "Fredoka", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+.data-filled {
     font-family: "Sour Gummy", sans-serif;
     font-optical-sizing: auto;
     font-weight: 300;
@@ -51,13 +57,6 @@ body {
     font-variation-settings: "wdth" 100;
 }
 
-button, select, [class^="bt-"], input, textarea {
-    font-family: "Fredoka", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-variation-settings: "wdth" 100;
-}
 [class^="bt-"] {
     transition: all 0.4s ease;
     &:hover {
@@ -84,19 +83,23 @@ button, select, [class^="bt-"], input, textarea {
 
 .bt-add-task {
     display: flex;
-    border-radius: 5px;
+    border-radius: var(--radius-td);
     background-color: var(--button-bg-color);
     color: #fff;
     text-decoration: none;
     padding: 0 1rem;
     justify-content: center;
     align-items: center;
+
     > .material-symbols-rounded {
         margin-left: 0.5rem;
     }
 }
 
 table {
+    th {
+        font-weight:500;
+    }
     &.table--index {
         border-collapse: separate;
         border-spacing: 0 10px;

@@ -14,17 +14,17 @@
         @* <td>@Html.DisplayFor(modelItem => item.DateCreation)</td>
         <td>@Html.DisplayFor(modelItem => item.DerniereModification) </td> *@
 
-        <td>
+        <td class="data-filled">
             @Html.DisplayFor(modelItem => item.Nom)
         </td>
         @* !!!!  A METTRE SEULEMENT DANS PAGE Détails !!!! *@
         @* <td>
             @Html.DisplayFor(modelItem => item.Description)
         </td> *@
-        <td>
+        <td class="data-filled">
             @Html.DisplayFor(modelItem => item.DateLimite)
         </td>
-        <td>
+        <td class="data-filled">
             @Html.DisplayFor(modelItem => item.Categorie)
         </td>
         <td>
@@ -32,7 +32,7 @@
                 var creationOuModif = HtmlHelpers.FormatLibelleDateCreaModif(item.DateCreation, item.DerniereModification);
             }
             <div class="small-libelle">@creationOuModif.verb</div>
-            <div>@creationOuModif.date</div>
+            <div class="data-filled">@creationOuModif.date</div>
         </td>
         <td>
             <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
