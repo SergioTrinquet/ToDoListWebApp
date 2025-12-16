@@ -7,8 +7,8 @@
         <td class="@HtmlHelpers.setCSSclassPriorite(item.Priorite)">
             @* @Html.DisplayFor(modelItem => item.Priorite) *@
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Statut)
+        <td class="checkbox-wrapper">
+            <input type="checkbox" class="statut-checkbox" @(item.Statut ? "checked" : "") data-id="@item.Id" />
         </td>
 
         @* <td>@Html.DisplayFor(modelItem => item.DateCreation)</td>

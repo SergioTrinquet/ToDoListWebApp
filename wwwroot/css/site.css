@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+﻿@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 
 :root {
     --body-bgcolor: #f2f2f2;
@@ -144,3 +144,36 @@ table {
     font-size: 0.8em;
     line-height: 0.8em;
 }
+
+ /*Checkbox*/
+.table--index .checkbox-wrapper {
+    text-align: center;
+
+    input[type="checkbox"] {
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        border: 2px solid #999;
+        border-radius: 4px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:checked {
+            background-color: var(--button-bg-color);
+            border-color: var(--button-bg-color);
+
+            &::after {
+                content: "✓";
+                color: #fff;
+                font-size: 16px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -55%);
+            }
+        }
+    }
+}
+} 
+

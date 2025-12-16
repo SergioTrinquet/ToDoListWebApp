@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToDoListWebApp.Data;
 using ToDoListWebApp.Models.ViewModels;
+using static ToDoListWebApp.Models.DTO.UtilityObjects;
 
 namespace ToDoListWebApp.Controllers
 {
@@ -36,34 +37,6 @@ namespace ToDoListWebApp.Controllers
 
             //return View(task);
             /// FIN V2 ///
-        }
-
-
-        // Appel méthode pour récupérer les tasks classées
-        public async Task<IActionResult> GetSortedTasks(string column, string order)
-        {
-            var tasks = _context.Task.AsQueryable();
-
-            try
-            {
-                switch (column)
-                {
-                    case "Nom":
-                        tasks = (order == "desc") ? tasks.OrderByDescending(t => t.Nom) : tasks.OrderBy(t => t.Nom);
-                        break;
-
-                    case "Priorite":
-                        tasks = (order == "desc") ? tasks.OrderByDescending(t => t.Priorite).ThenBy(t => t.Nom) : tasks.OrderBy(t => t.Priorite).ThenBy(t => t.Nom);
-                        break;
-                }
-
-                return PartialView("./Partials/_IndexTable", await tasks.ToListAsync());
-            }
-            catch(Exception)
-            {
-                throw;
-            }
-
         }
 
 
@@ -216,14 +189,64 @@ namespace ToDoListWebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        // Méthode pour changer le statut d'une task (fait/non fait) : Méthode appelée via JS en AJAX
+        [HttpPost]
+        //public async Task<IActionResult> ToggleStatut(int id, bool statut)
+        //{
+        //    var task = await _context.Task.FindAsync(id);
+        //    if (task == null) 
+        //        return NotFound();
+        //    task.Statut = statut;
+        //    await _context.SaveChangesAsync();
+        //    return Ok();
+        //}
+        public async Task<IActionResult> ToggleStatut([FromBody] ToggleStatutDTO dto)
+        {
+            var task = await _context.Task.FindAsync(dto.Id);
+            if (task == null)
+                return NotFound();
+            task.Statut = dto.Statut;
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+
+        // Pour récupérer les tasks classées : Méthode appelée via JS en AJAX
+        public async Task<IActionResult> GetSortedTasks(string column, string order)
+        {
+            var tasks = _context.Task.AsQueryable();
+
+            try
+            {
+                switch (column)
+                {
+                    case "Nom":
+                        tasks = (order == "desc") ? tasks.OrderByDescending(t => t.Nom) : tasks.OrderBy(t => t.Nom);
+                        break;
+
+                    case "Priorite":
+                        tasks = (order == "desc") ? tasks.OrderByDescending(t => t.Priorite).ThenBy(t => t.Nom) : tasks.OrderBy(t => t.Priorite).ThenBy(t => t.Nom);
+                        break;
+                }
+
+                return PartialView("./Partials/_IndexTable", await tasks.ToListAsync());
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
         private bool TaskExists(int id)
         {
             return _context.Task.Any(e => e.Id == id);
         }
-        
 
-        // Méthode utilitaire pour retourner le ViewModel contenant les données tiles pour l'UI en plus du DomainModel 
-        // qui s'occupe des données à lire/écrire daans la BDD
+
+        // Méthode utilitaire pour retourner le ViewModel contenant les données utiles pour l'UI 
+        // en plus du DomainModel qui s'occupe des données à lire/écrire daans la BDD
         private TaskViewModel BuildTaskViewModel(Models.DomainModels.Task task)
         {
             return new TaskViewModel
