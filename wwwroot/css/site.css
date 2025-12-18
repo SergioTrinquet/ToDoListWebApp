@@ -2,6 +2,7 @@
 
 :root {
     --body-bgcolor: #f2f2f2;
+    --primary-bg-color: #fff;
     --secondary-bg-color: #0093dd;
     --radius-td: 6px;
 }
@@ -95,7 +96,7 @@ body {
     display: flex;
     border-radius: var(--radius-td);
     background-color: var(--secondary-bg-color);
-    color: #fff;
+    color: var(--primary-bg-color);
     text-decoration: none;
     padding: 0 1rem;
     justify-content: center;
@@ -127,7 +128,7 @@ table {
             }
 
             > * {
-                background-color: #fff;
+                background-color: var(--primary-bg-color);
                 vertical-align: middle;
                 padding: .9rem .5rem;
 
@@ -144,13 +145,17 @@ table {
 }
 
 .priorite {
-    width: 15px;
+    width: 22px;
+
+    box-shadow: inset 1px 0 0 3px var(--primary-bg-color) !important;
     &.low {
         background-color: #5cb12e;
     }
+
     &.medium {
         background-color: #ffea42;
     }
+
     &.high {
         background-color: #ff8b1b;
     }
@@ -168,6 +173,7 @@ table {
         justify-content: center;
         align-items: center;
     }
+
     input[type="checkbox"] {
         appearance: none;
         width: 22px;
@@ -184,8 +190,8 @@ table {
 
             &::after {
                 content: "✓";
-                color: #fff;
-                font-size: 16px;
+                color: var(--primary-bg-color);
+                font-size: 1rem;
                 position: absolute;
                 top: 50%;
                 left: 50%;
@@ -211,7 +217,7 @@ table {
 
         &:hover {
             background-color: var(--secondary-bg-color);
-            color: #fff !important;
+            color:  var(--primary-bg-color) !important;
             border-radius: 100px;
 
             &:after {
@@ -223,7 +229,7 @@ table {
             content: attr(data-popin);
             position: absolute;
             font-family: "Fredoka", sans-serif;
-            font-size: 14px;
+            font-size: 0.875rem;
             color: #fff;
             transform: translate(calc(-50% - 12px), -150%);
             background-color: #161616e8;
