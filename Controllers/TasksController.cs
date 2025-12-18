@@ -106,12 +106,11 @@ namespace ToDoListWebApp.Controllers
 
             //ViewData["PrioriteSelect"] = _context.Priorite.ToList();  // TEST: Fonctionne mais pas retenu
 
-            //return View(task); // Version Originale
-
             // Version avec ViewModel pour alimenter aussi le Select 'Priorite'
             var vm = BuildTaskViewModel(task);
-            return View(vm);
-            /// FIN ///
+            //return View(vm); // Version avec View
+
+            return PartialView("./Partials/_EditModal", vm); // Version avec ViewModal
         }
 
 
@@ -147,11 +146,14 @@ namespace ToDoListWebApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                //return RedirectToAction(nameof(Index)); // Bonne version qd pas Edit ds une modale
+                return Json(new { success = true }); // Nvelle version : Pour indiquer le succès de l'opération en AJAX
             }
 
-            //return View(task); // Version Originale
-            return View(BuildTaskViewModel(task)); // Version avec ViewModel pour alimenter aussi le Select 'Priorite'
+            // Quand erreur de validation
+            //return View(BuildTaskViewModel(task)); // Version avec ViewModel pour alimenter aussi le Select 'Priorite'
+            return PartialView("./Partials/_EditModal", BuildTaskViewModel(task));
         }
 
 

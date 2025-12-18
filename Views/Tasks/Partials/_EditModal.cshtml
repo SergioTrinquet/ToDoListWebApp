@@ -1,0 +1,73 @@
+﻿@model ToDoListWebApp.Models.ViewModels.TaskViewModel
+
+<div class="modal fade" id="editTaskModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier la tâche</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form asp-action="Edit" method="post" id="editTaskForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" asp-for="Task.Id" />
+                    @Html.HiddenFor(m => m.Task.DateCreation)
+                    @Html.HiddenFor(m => m.Task.DerniereModification)
+
+                    <p>
+                        Créée le @Model.Task.DateCreation.ToString("dd/MM/yyyy à HH:mm")
+                         / 
+                        @if (Model.Task?.DerniereModification != null)
+                        {
+                            @("Modifiée le " + Model.Task?.DerniereModification?.ToString("dd/MM/yyyy à HH:mm"))
+                        }
+                        else
+                        {
+                            @("-")
+                        }
+                    </p>
+
+                    <div class="mb-3">
+                        <label asp-for="Task.Nom"></label>
+                        <input asp-for="Task.Nom" class="form-control" maxlength="50" />
+                        <span asp-validation-for="Task.Nom" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Task.Description"></label>
+                        <input asp-for="Task.Description" class="form-control" maxlength="250" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Task.DateLimite"></label>
+                        <input asp-for="Task.DateLimite" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Task.Priorite"></label>
+                        <select asp-for="Task.Priorite"
+                                class="form-select"
+                                asp-items="@(new SelectList(Model.PrioriteList, "Id", "Libelle"))">
+                            <option value="-1">-- priorité --</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Task.Categorie"></label>
+                        <input asp-for="Task.Categorie" class="form-control" />
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -2,6 +2,10 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Page Index : Création select pour le tri des tâches
+const tableBodyTaskIndex = document.querySelector("#body-table-index");
+const modalEdit = document.getElementById('modalEdit');
+
+
 const selectSort = document.querySelector("#sortList");
 if (selectSort) { 
     const listFieldToSort = [
@@ -24,7 +28,7 @@ if (selectSort) {
 
         fetch(`Tasks/GetSortedTasks?column=${fieldToSort}&order=${sortingOrder}`)
             .then(response => { return response.text() })
-            .then(html => document.querySelector("#body-table-index").innerHTML = html);
+            .then(html => tableBodyTaskIndex.innerHTML = html);
     })
     function setSortingOptionList(field, order) {
         return `<option value="${field.champ}" data-order="${order}">${field.libelle} (${order})</option>`;
@@ -58,4 +62,66 @@ document.querySelectorAll(".statut-checkbox").forEach(checkbox => {
         });
         
     })
+});
+
+
+// Appel PartialView pour 'Edit'
+if (tableBodyTaskIndex) {
+    tableBodyTaskIndex.addEventListener("click", e => {
+        if (!e.target.classList.contains("edit-task")) return;
+
+        e.preventDefault();
+        const id = e.target.getAttribute("data-id");
+
+        fetch(`/Tasks/Edit/${id}`)
+            .then(response => {
+                return response.text()
+            })
+            .then(html => {
+                modalEdit.innerHTML = html;
+                const modal = new bootstrap.Modal(document.getElementById("editTaskModal"));
+                modal.show();
+            });
+    })
+}
+
+
+
+document.addEventListener("submit", async e => {
+    const form = e.target;
+    if (form.id !== "editTaskForm") return;
+
+    e.preventDefault(); // Empeche validation classique avec reload de la page
+
+    const formData = new FormData(form);
+
+    const response = await fetch(form.action, {
+        method: "POST",
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        },
+        body: formData
+    });
+
+    const contentType = response.headers.get("content-type");
+    // Selon action POST 'Edit' dans le Controller : 
+    // si retour est du HTML => Erreur...
+    if (contentType && contentType.includes("text/html")) {
+        const html = await response.text();
+        document.querySelector(".modal-backdrop").remove(); // Sinon accumule les backdrops
+        modalEdit.innerHTML = html;
+        const modalEl = document.getElementById("editTaskModal");
+        new bootstrap.Modal(modalEl).show();
+
+    // ...Si retour est du JSON => Succès
+    } else {
+        const json = await response.json();
+        if (json.success) {
+            const modalEl = document.getElementById("editTaskModal");
+            bootstrap.Modal.getInstance(modalEl).hide();
+
+            location.reload();
+        }
+    }
+
 });
