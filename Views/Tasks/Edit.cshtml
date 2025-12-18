@@ -1,74 +1,4 @@
-﻿@* @using ToDoListWebApp.Models.DomainModels
-@model ToDoListWebApp.Models.DomainModels.Task
-
-@{
-    ViewData["Title"] = "Edit";
-}
-
-<h1>Edit</h1>
-
-<h4>Task</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="DateCreation" class="control-label"></label>
-                <input asp-for="DateCreation" class="form-control" />
-                <span asp-validation-for="DateCreation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DerniereModification" class="control-label"></label>
-                <input asp-for="DerniereModification" class="form-control" />
-                <span asp-validation-for="DerniereModification" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nom" class="control-label"></label>
-                <input asp-for="Nom" class="form-control" />
-                <span asp-validation-for="Nom" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Statut" /> @Html.DisplayNameFor(model => model.Statut)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateLimite" class="control-label"></label>
-                <input asp-for="DateLimite" class="form-control" />
-                <span asp-validation-for="DateLimite" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Priorite" class="control-label"></label>
-                <select asp-for="Priorite" class="form-select" asp-items="@(new SelectList((List<Priorite>)ViewData["PrioriteSelect"], "Id", "Libelle"))">
-                    <option>-- priorité --</option>
-                </select>
-
-                <span asp-validation-for="Priorite" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Categorie" class="control-label"></label>
-                <input asp-for="Categorie" class="form-control" />
-                <span asp-validation-for="Categorie" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div> *@
-
-
-
-
-@* DEBUT *@
-@using ToDoListWebApp.Models.DomainModels
+﻿@using ToDoListWebApp.Models.DomainModels
 @model ToDoListWebApp.Models.ViewModels.TaskViewModel
 
 @{
@@ -85,8 +15,7 @@
             <div class="form-group">
                 @Html.HiddenFor(model => model.Task.DateCreation)
                 <p>Créée le @Model.Task?.DateCreation.ToString("dd/MM/yyyy à HH:mm")</p>
-            </div>
-            <div class="form-group">
+                <br />
                 @Html.HiddenFor(model => model.Task.DerniereModification)
                 <p>
                 @if(Model.Task?.DerniereModification != null) {
@@ -130,15 +59,6 @@
         </form>
     </div>
 </div>
-@* FIN *@
-
-
-
-
-
-
-
-
 
 <div>
     <a asp-action="Index">Back to List</a>
