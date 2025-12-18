@@ -40,25 +40,6 @@ namespace ToDoListWebApp.Controllers
         }
 
 
-        // GET: Tasks/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var task = await _context.Task
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (task == null)
-            {
-                return NotFound();
-            }
-
-            return View(task);
-        }
-
-
         // GET: Tasks/Create
         public IActionResult Create()
         {
@@ -104,13 +85,10 @@ namespace ToDoListWebApp.Controllers
                 return NotFound();
             }
 
-            //ViewData["PrioriteSelect"] = _context.Priorite.ToList();  // TEST: Fonctionne mais pas retenu
+            //ViewData["PrioriteSelect"] = _context.Priorite.ToList();  // TEST: Pas retenu
 
-            // Version avec ViewModel pour alimenter aussi le Select 'Priorite'
-            var vm = BuildTaskViewModel(task);
-            //return View(vm); // Version avec View
-
-            return PartialView("./Partials/_EditModal", vm); // Version avec ViewModal
+            var vm = BuildTaskViewModel(task); // ViewModel pour alimenter aussi le Select 'Priorite'
+            return PartialView("./Partials/_EditModal", vm);
         }
 
 
@@ -147,12 +125,10 @@ namespace ToDoListWebApp.Controllers
                     }
                 }
 
-                //return RedirectToAction(nameof(Index)); // Bonne version qd pas Edit ds une modale
-                return Json(new { success = true }); // Nvelle version : Pour indiquer le succès de l'opération en AJAX
+                return Json(new { success = true }); // Pour indiquer succès de l'opération en AJAX
             }
 
-            // Quand erreur de validation
-            //return View(BuildTaskViewModel(task)); // Version avec ViewModel pour alimenter aussi le Select 'Priorite'
+            // Quand erreur de validation : Retour en Html
             return PartialView("./Partials/_EditModal", BuildTaskViewModel(task));
         }
 
