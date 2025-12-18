@@ -18,7 +18,7 @@ namespace ToDoListWebApp.Models.DomainModels
         [DisplayName("Dernière modif.")]
         public DateTime? DerniereModification { get; set; }
         
-        [Required(ErrorMessage = "Le nom de la tâche est obligatoire.", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Le champ 'tâche' est obligatoire", AllowEmptyStrings = false)]
         [DisplayName("Tâche")]
         public string Nom { get; set; }
 
