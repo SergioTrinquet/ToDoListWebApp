@@ -5,6 +5,7 @@
     --primary-bg-color: #fff;
     --secondary-bg-color: #0093dd;
     --radius-td: 6px;
+    --box-shadow-priorite-field: var(--primary-bg-color);
 }
 
 
@@ -140,14 +141,71 @@ table {
                     border-radius: 0 var(--radius-td) var(--radius-td) 0;
                 }
             }
+
+            &:has(.checkbox-wrapper input[type="checkbox"]:checked) {
+                td {
+                    --bgcolor-line-when-task-done: #e7e7e7;
+                    background-color: var(--bgcolor-line-when-task-done);
+
+                    &.priorite {
+                        --box-shadow-priorite-field: var(--bgcolor-line-when-task-done);
+                    }
+
+                    &:not(:has(.icons-action)) {
+                        text-decoration: line-through;
+                        color: #a7a7a7;
+                    }
+                }
+            }
+        }
+
+        .checkbox-wrapper {
+            & > div {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            input[type="checkbox"] {
+                appearance: none;
+                width: 22px;
+                height: 22px;
+                border: 2px solid #999;
+                border-radius: 4px;
+                position: relative;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &:checked {
+                    background-color: var(--secondary-bg-color);
+                    border-color: var(--secondary-bg-color);
+
+                    &::after {
+                        content: "✓";
+                        color: var(--primary-bg-color);
+                        font-size: 1rem;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -55%);
+                    }
+                }
+            }
         }
     }
 }
 
+.nom {
+    font-weight: 500;
+}
+#description {
+    width: 30%;
+}
+
 .priorite {
     width: 22px;
+    box-shadow: inset 1px 0 0 3px var(--box-shadow-priorite-field) !important;
 
-    box-shadow: inset 1px 0 0 3px var(--primary-bg-color) !important;
     &.low {
         background-color: #5cb12e;
     }
@@ -165,49 +223,14 @@ table {
     font-size: 0.8em;
     line-height: 0.8em;
 }
-
- /*Checkbox*/
-.table--index .checkbox-wrapper {
-    & > div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    input[type="checkbox"] {
-        appearance: none;
-        width: 22px;
-        height: 22px;
-        border: 2px solid #999;
-        border-radius: 4px;
-        position: relative;
-        cursor: pointer;
-        transition: all 0.2s ease;
-
-        &:checked {
-            background-color: var(--secondary-bg-color);
-            border-color: var(--secondary-bg-color);
-
-            &::after {
-                content: "✓";
-                color: var(--primary-bg-color);
-                font-size: 1rem;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -55%);
-            }
-        }
-    }
-}
-
+    
 .icons-action {
     --transition-icons-action: all 0.3s ease;
     display: flex;
     gap: 10px;
 
     & > * {
-        &:first-child{
+        &:first-child {
             margin-left: auto;
         }
 
@@ -217,7 +240,7 @@ table {
 
         &:hover {
             background-color: var(--secondary-bg-color);
-            color:  var(--primary-bg-color) !important;
+            color: var(--primary-bg-color) !important;
             border-radius: 100px;
 
             &:after {
@@ -253,4 +276,11 @@ table {
 #modalEdit button[type="submit"] {
     background-color: var(--secondary-bg-color);
     border-color: var(--secondary-bg-color);
+}
+
+.frame-delete-task {
+    padding: 1rem;
+    background-color: var(--primary-bg-color);
+    border-radius: var(--radius-td);
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.10));
 }
