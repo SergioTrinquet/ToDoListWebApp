@@ -39,6 +39,8 @@ namespace ToDoListWebApp.Models.DomainModels
         [DisplayName("Catégorie")]
         public string? Categorie { get; set; }
 
+        public Priorite? PrioriteNavigation { get; set; } // 👈 Pour la jointure avec table 'Priorite' : Pas présent ds la table 'Task ' générée (navigation EF)
+
         public Task()
         {
                 

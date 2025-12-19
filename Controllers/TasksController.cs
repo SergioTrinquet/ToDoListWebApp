@@ -23,20 +23,8 @@ namespace ToDoListWebApp.Controllers
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Task.ToListAsync()); // Version Originale
-
-            /// V2 ///
-            //var task = await _context.Task.ToListAsync();
-            //var prioriteList = _context.Priorite.ToList();
-            //task.ForEach(t => {
-            //    if(t.Priorite != null)
-            //    {
-            //        t.Priorite = prioriteList.Find(p => p.Id == t.Priorite).Id;
-            //    }
-            //});
-
-            //return View(task);
-            /// FIN V2 ///
+            var task = await _context.Task.Include(t => t.PrioriteNavigation).ToListAsync();
+            return View(task);
         }
 
 
@@ -142,6 +130,7 @@ namespace ToDoListWebApp.Controllers
             }
 
             var task = await _context.Task
+                .Include(t => t.PrioriteNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (task == null)
             {
