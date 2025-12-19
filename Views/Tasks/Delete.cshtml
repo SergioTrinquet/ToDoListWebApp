@@ -38,7 +38,7 @@
             @Html.DisplayNameFor(model => model.Statut)
         </dt>
         <dd class = "col-sm-6">
-            @Html.DisplayFor(model => model.Statut)
+            @(Model.Statut ? "Oui" : "Non")
         </dd>
         <dt class = "col-sm-6">
             @Html.DisplayNameFor(model => model.DateLimite)
@@ -60,9 +60,9 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete" class="center">
+    <form asp-action="Delete" class="form-button-delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Supprimer" class="btn btn-danger" /> |
-        <a asp-action="Index">Retour à la liste</a>
+        <input type="submit" value="Supprimer" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
     </form>
 </div>

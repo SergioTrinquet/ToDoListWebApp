@@ -60,13 +60,6 @@ body {
     outline-offset: 2px;
 }
 
-[class^="bt-"] {
-    transition: all 0.4s ease;
-    &:hover {
-        background-color: color-mix(in srgb, var(--secondary-bg-color) 90%, #000);
-    }
-}
-
 .center {
     text-align: center;
 }
@@ -92,10 +85,22 @@ body {
     }
 }
 
+[class^="bt-"], .btn {
+    transition: all 0.3s ease;
+}
+.bt-add-task,
+.btn-primary {
+    background-color: var(--secondary-bg-color);
+    border-color: var(--secondary-bg-color);
+
+    &:hover, &:focus-visible {
+        background-color: color-mix(in srgb, var(--secondary-bg-color) 90%, #000);
+        border-color: color-mix(in srgb, var(--secondary-bg-color) 90%, #000);
+    }
+}
 .bt-add-task {
     display: flex;
     border-radius: var(--radius-td);
-    background-color: var(--secondary-bg-color);
     color: var(--primary-bg-color);
     text-decoration: none;
     padding: 0 1rem;
@@ -103,7 +108,7 @@ body {
     align-items: center;
 
     > .material-symbols-rounded {
-        margin-left: 0.5rem;
+        margin-right: 0.5rem;
     }
 }
 
@@ -288,17 +293,13 @@ table {
     }
 }
 
-#modalEdit button[type="submit"] {
-    background-color: var(--secondary-bg-color);
-    border-color: var(--secondary-bg-color);
-}
-
 main:has(.frame-delete-task) {
     max-width: 800px;
     margin: auto;
 }
 
-.header-delete {
+.header-delete,
+.header-creation {
     margin-block: 2rem;
 }
 
@@ -313,7 +314,38 @@ main:has(.frame-delete-task) {
         font-weight: 500;
     }
 
+    > dd {
+        min-height: 1.5rem;
+    }
+
+    @media (max-width: 576px) {
+        dd, dt {
+            text-align: center;
+        }
+
+        dd {
+            min-height: 1.8rem;
+        }
+    }
+
     & ~ form {
-        margin-block-start:2rem;
+        margin-block-start: 2rem;
     }
 }
+
+    .form-button-delete,
+    .form-button-creation {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+
+        > .btn {
+            width: 150px;
+        }
+    }
+
+    .form-creation {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
