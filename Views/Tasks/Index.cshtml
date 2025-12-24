@@ -14,11 +14,28 @@
     </a> 
 </div>
 
-<div class="filter-index mb-2">
-    <span>Classer par</span>
-    <select id="sortList" class="form-select">
-        <option value="-1">ordre des tâches créées</option>
-    </select>
+<div class="filter-and-sort-index mb-4">
+
+    <div class="filter-index">
+        <label>Classer par</label>
+        <select id="sortList" class="form-select">
+            <option value="-1">ordre des tâches créées</option>
+        </select>
+    </div>
+
+    <div class="sort-index">
+        <label>Filtrer par</label>
+        <div class="input-group">
+            <input type="text" name="filterInput" class="form-control" maxlength="30" placeholder="Nom de la tâche ou description" aria-label="Nom de la tâche ou description" aria-describedby="basic-addon2">
+            <div class="msg-erreur">Au moins 3 caractères</div>
+            <div class="input-group-append">
+                <button id="bt-delete-filter" class="btn btn-outline-secondary">
+                    <span class=" material-symbols-rounded">close_small</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <table class="table table--index">

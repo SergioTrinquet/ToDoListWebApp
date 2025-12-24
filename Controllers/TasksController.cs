@@ -180,12 +180,20 @@ namespace ToDoListWebApp.Controllers
 
 
         // Pour récupérer les tasks classées : Méthode appelée via JS en AJAX
-        public async Task<IActionResult> GetSortedTasks(string column, string order)
+        public async Task<IActionResult> GetSortedTasks(string column, string order, string filter = "") 
         {
             var tasks = _context.Task.AsQueryable();
 
             try
             {
+                tasks = tasks.Include(t => t.PrioriteNavigation);
+
+                if(filter != "")
+                {
+                    filter = filter.Trim();
+                    tasks = tasks.Where(t => t.Nom.Contains(filter) || t.Description.Contains(filter));
+                }
+
                 switch (column)
                 {
                     case "Nom":

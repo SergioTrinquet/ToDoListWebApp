@@ -4,6 +4,7 @@
 // Page Index : Création select pour le tri des tâches
 const tableBodyTaskIndex = document.querySelector("#body-table-index");
 const modalEdit = document.getElementById('modalEdit');
+const filterInput = document.querySelector("input[name='filterInput']");
 
 
 const selectSort = document.querySelector("#sortList");
@@ -22,19 +23,66 @@ if (selectSort) {
     })
 
     // Sélection filtre
-    selectSort.addEventListener('change', () => {
-        const fieldToSort = selectSort.value;
-        const sortingOrder = selectSort.options[selectSort.selectedIndex].getAttribute("data-order");
-
-        fetch(`Tasks/GetSortedTasks?column=${fieldToSort}&order=${sortingOrder}`)
-            .then(response => { return response.text() })
-            .then(html => tableBodyTaskIndex.innerHTML = html);
-    })
+    selectSort.addEventListener('change', () => fetchTasks());
     function setSortingOptionList(field, order) {
         return `<option value="${field.champ}" data-order="${order}">${field.libelle} (${order})</option>`;
     }
 
 }
+
+// Filtre : EN COURS
+function getDataSortAndFilter() {
+    return {
+        "fieldToSort": selectSort.value,
+        "sortingOrder": selectSort.options[selectSort.selectedIndex].getAttribute("data-order"),
+        "filterInputValue": filterInput.value.trim()
+    }
+}
+
+let resetLastValue = null;
+let forbiddenKey = null;
+const timeDebounce = 500;
+const minCharToFilter = 3;
+const debouncedFetchTasks = debounce(fetchTasks, timeDebounce);
+
+filterInput.addEventListener('keydown', e => {
+    forbiddenKey = false;
+    if (e.code === 'Space' || e.key === ' ') forbiddenKey = true;
+});
+filterInput.addEventListener('input', e => {
+    if (!forbiddenKey) {
+        const lengthValue = e.target.value.trim().length;
+        const resetFilter = lengthValue < minCharToFilter;
+        e.target.classList[resetFilter && lengthValue !== 0  ? "add" : "remove"]("is-invalid");
+        if (resetFilter && resetFilter === resetLastValue) return;
+        resetLastValue = resetFilter;
+        debouncedFetchTasks();
+    }
+})
+function debounce(func, delay) {
+    console.log(func, delay)
+    let timerId;
+    return function (...args) {
+        clearTimeout(timerId);
+        timerId = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+function fetchTasks() { console.log("fetchTasks")
+    const data = getDataSortAndFilter();
+    //console.warn("data.fieldToSort : ", data.fieldToSort, "data.sortingOrder", data.sortingOrder, "data.filterInputValue", data.filterInputValue) 
+
+    data.filterInputValue = (data.filterInputValue.length < minCharToFilter ? "" : data.filterInputValue); // Cas ou saisie filter inf. à 3
+    //console.log("APRE TRAITEMENT : data.filterInputValue", data.filterInputValue)
+
+    fetch(`Tasks/GetSortedTasks?column=${data.fieldToSort}&order=${data.sortingOrder}&filter=${data.filterInputValue}`)
+        .then(response => { return response.text() })
+        .then(html => tableBodyTaskIndex.innerHTML = html);
+}
+
+document.querySelector("#bt-delete-filter").addEventListener("input", () => filterInput.value = "");
+//// FIN Filtre
+
 
 
 // Page Index : Gestion de l'évènement sur checkbox pour Statut

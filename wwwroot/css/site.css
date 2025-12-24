@@ -112,12 +112,72 @@ body {
     }
 }
 
-.filter-index {
+.filter-and-sort-index {
     display: flex;
+
+    > * {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+
+        &:first-child {
+            margin-right: auto;
+        }
+    }
+
+    label {
+        white-space: nowrap;
+    }
+
+    @media (width < 768px) {
+        display: block;
+
+        > * {
+            margin-bottom: .2rem;
+        }
+    }
+
+    .sort-index .input-group {
+        flex-wrap: nowrap;
+    }
+}
+
+.input-group > .form-control[name="filterInput"] {
+    width: 260px;
+
+    & + .msg-erreur {
+        display: none;
+        position: absolute;
+        color: #dc3545;
+        font-style: italic;
+        font-weight: 500;
+        font-size: 0.9rem;
+        padding: 0 12px;
+        transform: translate(0, calc(18px + 100%));
+        z-index: 1;
+    }
+
+    &.is-invalid + .msg-erreur {
+        display: block;
+    }
+}
+
+#sortList {
+    width: auto;
+}
+
+#bt-delete-filter {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    padding-inline: 6px;
+    background-color: var(--bs-body-bg);
+    border-color: var(--bs-border-color);
+    display: flex;
+    height: 100%;
     align-items: center;
-    gap: .5rem;
-    #sortList {
-        width: auto;
+
+    &:hover, &:focus {
+        color: #000;
     }
 }
 
@@ -217,6 +277,7 @@ table {
 .nom {
     font-weight: 500;
 }
+
 #description {
     width: 30%;
 }
@@ -243,7 +304,7 @@ table {
     line-height: 0.8em;
     margin-bottom: 0.1rem;
 }
-    
+
 .icons-action {
     --transition-icons-action: all 0.3s ease;
     display: flex;
@@ -333,19 +394,19 @@ main:has(.frame-delete-task) {
     }
 }
 
-    .form-button-delete,
-    .form-button-creation {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
+.form-button-delete,
+.form-button-creation {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
 
-        > .btn {
-            width: 150px;
-        }
+    > .btn {
+        width: 150px;
     }
+}
 
-    .form-creation {
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-    }
+.form-creation {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
