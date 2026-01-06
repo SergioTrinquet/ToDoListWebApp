@@ -112,7 +112,7 @@ body {
     }
 }
 
-.filter-and-sort-index {
+#filter-and-sort-index {
     display: flex;
 
     > * {
