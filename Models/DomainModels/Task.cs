@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -7,6 +8,9 @@ namespace ToDoListWebApp.Models.DomainModels
     public class Task
     {
         public int Id { get; set; }
+
+        public string? UserId { get; set; }
+        public IdentityUser? User { get; set; } // 👈 pour la jointure avec la table 'AspNetUsers' (IdentityUser) : Pas présent ds la table 'Task ' générée (navigation EF)
 
         [DataType(DataType.Date)] // Ensures only date (no time) in UI helpers
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]

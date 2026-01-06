@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoListWebApp.Data;
 
@@ -11,9 +12,11 @@ using ToDoListWebApp.Data;
 namespace ToDoListWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260105110201_Ajout_User_a_Task")]
+    partial class Ajout_User_a_Task
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,13 +278,11 @@ namespace ToDoListWebApp.Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Priorite");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Task");
                 });
@@ -343,15 +344,7 @@ namespace ToDoListWebApp.Data.Migrations
                         .WithMany()
                         .HasForeignKey("Priorite");
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("PrioriteNavigation");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

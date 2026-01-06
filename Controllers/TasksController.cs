@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,21 +16,31 @@ namespace ToDoListWebApp.Controllers
     public class TasksController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public TasksController(ApplicationDbContext context)
+        public TasksController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Tasks
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var task = await _context.Task.Include(t => t.PrioriteNavigation).ToListAsync();
+            var userId = _userManager.GetUserId(User); // Récupérer l'ID de l'utilisateur connecté
+            var task = await _context.Task
+                                .Include(t => t.PrioriteNavigation)  // .Include() pour afficher les labels présents dans la table 'Priorite'
+                                .Include(t => t.User)  // .Include() pour afficher données du User de la tâche, présent dans la table 'AspNetUsers'
+                                .Where(t => t.UserId == userId)
+                                .ToListAsync();
+            
             return View(task);
         }
 
 
         // GET: Tasks/Create
+        [Authorize]
         public IActionResult Create()
         {
             // return View(); // Version originale
@@ -39,12 +51,17 @@ namespace ToDoListWebApp.Controllers
         // POST: Tasks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DateCreation,DerniereModification,Nom,Description,Statut,DateLimite,Priorite,Categorie")] Models.DomainModels.Task task)
+        public async Task<IActionResult> Create([Bind("Nom,Description,DateLimite,Priorite,Categorie")] Models.DomainModels.Task task)
         {
+            // Supprimer l'état de validation pour UserId
+            //ModelState.Remove("task.UserId");   
+
             if (ModelState.IsValid)
             {
+                task.UserId = _userManager.GetUserId(User);
                 task.DateCreation = DateTime.Now;
 
                 _context.Add(task);
@@ -54,7 +71,7 @@ namespace ToDoListWebApp.Controllers
 
             //return View(task); // Version Originale
 
-            // En cas d'erreur de validation: Retourner TaskViewModel avec la liste des priorités afin de tjscorrectement réinitialiser le Select
+            // En cas d'erreur de validation: Retourner TaskViewModel avec la liste des priorités afin de tjs correctement réinitialiser le Select
             return View(BuildTaskViewModel(task)); // Version avec ViewModel pour alimenter aussi le Select 'Priorite'
         }
 
@@ -186,9 +203,12 @@ namespace ToDoListWebApp.Controllers
 
             try
             {
-                tasks = tasks.Include(t => t.PrioriteNavigation);
+                tasks = tasks
+                    .Include(t => t.PrioriteNavigation)
+                    .Include(t => t.User);
+                    
 
-                if(filter != "")
+                if (filter != "")
                 {
                     filter = filter.Trim();
                     tasks = tasks.Where(t => t.Nom.Contains(filter) || t.Description.Contains(filter));
