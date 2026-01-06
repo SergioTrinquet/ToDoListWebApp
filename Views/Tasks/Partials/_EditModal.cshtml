@@ -33,24 +33,25 @@
 
                     <div class="mb-3">
                         <label asp-for="Task.Nom"></label>
-                        <input asp-for="Task.Nom" class="form-control" maxlength="50" />
+                        <input asp-for="Task.Nom" class="form-control" maxlength="50" disabled="@Model.Task!.Statut" />
                         <span asp-validation-for="Task.Nom" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Task.Description"></label>
-                        <input asp-for="Task.Description" class="form-control" maxlength="250" />
+                        <input asp-for="Task.Description" class="form-control" maxlength="250" disabled="@Model.Task!.Statut" />
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Task.DateLimite"></label>
-                        <input asp-for="Task.DateLimite" class="form-control" />
+                        <input asp-for="Task.DateLimite" class="form-control" disabled="@Model.Task!.Statut" />
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Task.Priorite"></label>
                         <select asp-for="Task.Priorite"
                                 class="form-select"
+                                disabled="@Model.Task!.Statut"
                                 asp-items="@(new SelectList(Model.PrioriteList, "Id", "Libelle"))">
                             <option value="-1">-- priorité --</option>
                         </select>
@@ -58,13 +59,15 @@
 
                     <div class="mb-3">
                         <label asp-for="Task.Categorie"></label>
-                        <input asp-for="Task.Categorie" class="form-control" maxlength="50" />
+                        <input asp-for="Task.Categorie" class="form-control" maxlength="50" disabled="@Model.Task!.Statut" />
                     </div>
-
+                    @if (Model.Task!.Statut == false)
+                    {
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                     </div>
+                    }
                 </form>
             </div>
 
