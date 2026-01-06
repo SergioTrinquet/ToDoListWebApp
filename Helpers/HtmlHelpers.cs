@@ -4,14 +4,6 @@ namespace ToDoListWebApp.Helpers
 {
     public static class HtmlHelpers
     {
-        //public static string FormatLibelleDateCreaModif(DateTime dateCreation, DateTime? dateModif)
-        //{
-        //    return (
-        //        dateModif == null ? "Créé" : "Modifié") 
-        //        + " le " + 
-        //        (dateModif == null ? dateCreation.ToString("dd/MM/yyyy à HH:mm") : dateModif?.ToString("dd/MM/yyyy à HH:mm")
-        //    );
-        //}
         public static DateCreaModifDTO FormatLibelleDateCreaModif(DateTime dateCreation, DateTime? dateModif)
         {
             return new DateCreaModifDTO (
@@ -29,5 +21,28 @@ namespace ToDoListWebApp.Helpers
                 _ => ""
             };
 
+        public static UserNamePicto SetUserShortName(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName) || userName.Length < 2)
+                return new UserNamePicto (string.Empty, string.Empty);
+
+            // Palette de classes CSS disponibles
+            string[] classes =
+            {
+                "user-color-1",
+                "user-color-2",
+                "user-color-3",
+                "user-color-4",
+                "user-color-5",
+                "user-color-6"
+            };
+
+            int hash = Math.Abs(userName.GetHashCode());
+
+            return new UserNamePicto(
+                char.ToUpper(userName[0]) + char.ToLower(userName[1]).ToString(),
+                classes[hash % classes.Length]
+            );
+        }
     }
 }

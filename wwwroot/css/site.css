@@ -225,7 +225,7 @@ table {
                         --box-shadow-priorite-field: var(--bgcolor-line-when-task-done);
                     }
 
-                    &:not(:has(.icons-action)) {
+                    &:not(:has(.icons-action)):not(:has([class^="user-color-"])) {
                         text-decoration: line-through;
                         color: var(--color-line-when-task-done);
                     }
@@ -409,4 +409,32 @@ main:has(.frame-delete-task) {
     display: flex;
     flex-direction: column;
     gap: .5rem;
+}
+
+[class^="user-color-"] {
+    color: #fff;
+    font-weight: 500;
+    border-radius: 100px;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    aspect-ratio: 1;
+}
+.user-color-1 {
+    background-color: #133ee6;
+}
+.user-color-2 {
+    background-color: #04860b;
+}
+.user-color-3 {
+    background-color: #ff24d2;
+}
+.user-color-4 {
+    background-color: red;
+}
+.user-color-5 {
+    background-color: blue;
+}
+.user-color-6 {
+    background-color: darkslategrey;
 }

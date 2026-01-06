@@ -11,10 +11,6 @@
                 <input type="checkbox" class="statut-checkbox" @(item.Statut ? "checked" : "") data-id="@item.Id" />
             </div>
         </td>
-
-        @* <td>@Html.DisplayFor(modelItem => item.DateCreation)</td>
-        <td>@Html.DisplayFor(modelItem => item.DerniereModification) </td> *@
-
         <td class="data-filled nom">
             @Html.DisplayFor(modelItem => item.Nom)
         </td>
@@ -26,6 +22,14 @@
         </td>
         <td class="data-filled center">
             @Html.DisplayFor(modelItem => item.Categorie)
+        </td>
+        <td>
+            @{
+                var userNamePicto = HtmlHelpers.SetUserShortName(item.User?.UserName);
+            }
+            <div title="@item.User?.UserName" class="@userNamePicto.CssClassColor">
+                @userNamePicto.shortName
+            </div>
         </td>
         <td>
             @{
