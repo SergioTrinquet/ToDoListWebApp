@@ -1,6 +1,10 @@
 ﻿@using ToDoListWebApp.Helpers
 @model IEnumerable<ToDoListWebApp.Models.DomainModels.Task>
 
+@{
+    var UserAuthenticated = User.Identity.IsAuthenticated;
+}
+
 @foreach (var item in Model)
 {
     <tr>
@@ -40,8 +44,15 @@
         </td>
         <td>
             <div class="icons-action">
-                <a class="material-symbols-rounded edit-task pointer" data-id="@item.Id" data-popin="Modifier" tabindex="0">Edit</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="material-symbols-rounded" data-popin="Supprimer">delete</a>
+                @if (UserAuthenticated)
+                {
+                    <a class="material-symbols-rounded edit-task" data-id="@item.Id" data-popin="Modifier" tabindex="0">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="material-symbols-rounded" data-popin="Supprimer">delete</a>
+                } else
+                {
+                    <a class="material-symbols-rounded edit-task disabled" data-popin="Modifier: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas modifier une tâche autre que la vôtre. Inscrivez-vous/connectez-vous pour créer/modifier vos tâches." tabindex="0">Edit</a>
+                    <a class="material-symbols-rounded disabled" data-popin="Supprimer: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas supprimer une tâche autre que la vôtre. Inscrivez-vous/connectez-vous pour créer/supprimer vos tâches.">delete</a>
+                }
             </div>
         </td>
     </tr>
