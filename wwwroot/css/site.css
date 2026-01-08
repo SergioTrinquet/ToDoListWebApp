@@ -6,6 +6,10 @@
     --secondary-bg-color: #0093dd;
     --radius-td: 6px;
     --box-shadow-priorite-field: var(--primary-bg-color);
+    --tooltip-bgcolor: #161616e8;
+    --tooltip-color: #fff;
+    --tooltip-transition: all 0.3s ease;
+    --color-font-inactive: #a7a7a7;
 }
 
 
@@ -50,6 +54,12 @@ body {
     font-weight: 400;
     font-style: normal;
     font-variation-settings: "wdth" 100;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 .data-filled {
     line-height: 1.3rem;
@@ -110,6 +120,100 @@ body {
     > .material-symbols-rounded {
         margin-right: 0.5rem;
     }
+
+    &.disabled {
+        background-color: #bdbbbb;
+        color: #e5e5e5;
+        cursor: not-allowed;
+        position: relative;
+
+        &:before {
+            content: attr(data-popin);
+            position: absolute;
+            z-index: 1;
+            top: calc(100% + 10px);
+            text-align: center;
+            font-family: "Fredoka", sans-serif;
+            font-size: 0.875rem;
+            line-height: 1rem;
+            color: var(--tooltip-color);
+            background-color: var(--tooltip-bgcolor);
+            padding: 5px;
+            border-radius: 3px;
+            opacity: 0;
+            transition: var(--tooltip-transition);
+            pointer-events: none;
+        }
+        &:hover:before {
+            opacity: 1;
+        }
+    }
+}
+
+#alert-user-demo p {
+    margin-bottom: 0.1rem;
+}
+.alert-user-demo-title {
+    font-weight: 500;
+}
+
+#toggle-author-tasks {
+    --height-toggle: 24px;
+    --margin-round-el-toggle: 3px;
+    --width-toggle: calc(var(--height-toggle) * 2);
+    --width-round-el: calc(var(--height-toggle) - (var(--margin-round-el-toggle) * 2));
+    --grow-when-active-round-el-toggle: 4px;
+    --half-grow-when-active-round-el-toggle: calc(var(--grow-when-active-round-el-toggle) / 2);
+    display: flex;
+    gap: 0.25rem;
+
+    input[type=checkbox] {
+        height: 0;
+        width: 0;
+        visibility: hidden;
+    }
+
+    label {
+        cursor: pointer;
+        text-indent: -9999px;
+        width: var(--width-toggle);
+        height: var(--height-toggle);
+        background: grey;
+        display: block;
+        border-radius: var(--height-toggle);
+        position: relative;
+    }
+
+        label:after {
+            content: '';
+            position: absolute;
+            top: var(--margin-round-el-toggle);
+            left: var(--margin-round-el-toggle);
+            width: var(--width-round-el);
+            aspect-ratio: 1;
+            border-radius: var(--width-round-el);
+            transition: 0.3s;
+            background: #fff;
+        }
+
+    input:checked + label {
+        background: var(--secondary-bg-color);
+    }
+
+        input:checked + label:after {
+            left: calc(100% - var(--margin-round-el-toggle));
+            transform: translateX(-100%);
+        }
+
+    label:active:after {
+        width: calc(var(--width-round-el) + var(--grow-when-active-round-el-toggle));
+        top: calc(var(--margin-round-el-toggle) - var(--half-grow-when-active-round-el-toggle));
+        left: calc(var(--margin-round-el-toggle) - var(--half-grow-when-active-round-el-toggle));
+    }
+
+    input:checked + label:active:after {
+        transform: translateX(calc(-100% + var(--half-grow-when-active-round-el-toggle)));
+    }
 }
 
 #filter-and-sort-index {
@@ -130,10 +234,14 @@ body {
     }
 
     @media (width < 768px) {
-        display: block;
+        flex-direction: column;
+        gap: 0.5rem;
 
+        label {
+            width: 100px;
+        }
         > * {
-            margin-bottom: .2rem;
+            width: 100%;
         }
     }
 
@@ -160,10 +268,6 @@ body {
     &.is-invalid + .msg-erreur {
         display: block;
     }
-}
-
-#sortList {
-    width: auto;
 }
 
 #bt-delete-filter {
@@ -217,7 +321,7 @@ table {
 
             &:has(.checkbox-wrapper input[type="checkbox"]:checked) {
                 td {
-                    --color-line-when-task-done: #a7a7a7;
+                    --color-line-when-task-done: var(--color-font-inactive);
                     --bgcolor-line-when-task-done: #cdcdcd;
                     background-color: var(--bgcolor-line-when-task-done);
 
@@ -306,9 +410,9 @@ table {
 }
 
 .icons-action {
-    --transition-icons-action: all 0.3s ease;
     display: flex;
     gap: 10px;
+    position: relative;
 
     & > * {
         &:first-child {
@@ -316,7 +420,7 @@ table {
         }
 
         padding: 8px;
-        transition: var(--transition-icons-action);
+        transition: var(--tooltip-transition);
         color: var(--secondary-bg-color);
 
         &:hover {
@@ -335,12 +439,14 @@ table {
             font-family: "Fredoka", sans-serif;
             font-size: 0.875rem;
             color: #fff;
-            transform: translate(calc(-50% - 12px), -150%);
-            background-color: #161616e8;
+            transform: translate(calc(-50% - 12px), calc(-100% - 15px));
+            background-color: var(--tooltip-bgcolor);
             padding: 5px;
             border-radius: 3px;
             opacity: 0;
-            transition: var(--transition-icons-action);
+            transition: var(--tooltip-transition);
+            pointer-events: none;
+            text-wrap: wrap;
         }
     }
 
@@ -350,6 +456,20 @@ table {
 
         &:hover {
             background-color: var(--color-icon-supprimer);
+        }
+    }
+
+    .material-symbols-rounded.disabled {
+        color: var(--color-font-inactive);
+        cursor: not-allowed;
+
+        &:after {
+            width: 200%;
+            font-size: 0.8rem;
+        }
+
+        &:hover {
+            background-color: var(--color-font-inactive);
         }
     }
 }
@@ -419,6 +539,7 @@ main:has(.frame-delete-task) {
     place-items: center;
     width: 2.5rem;
     aspect-ratio: 1;
+    cursor: default;
 }
 .user-color-1 {
     background-color: #133ee6;
