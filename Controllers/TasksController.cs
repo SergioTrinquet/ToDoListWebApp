@@ -25,16 +25,29 @@ namespace ToDoListWebApp.Controllers
         }
 
         // GET: Tasks
-        [Authorize]
+        [AllowAnonymous] // Permet de donner accès à la view de l'action sans login, contrairement à [Authorize]
         public async Task<IActionResult> Index()
         {
-            var userId = _userManager.GetUserId(User); // Récupérer l'ID de l'utilisateur connecté
-            var task = await _context.Task
-                                .Include(t => t.PrioriteNavigation)  // .Include() pour afficher les labels présents dans la table 'Priorite'
-                                .Include(t => t.User)  // .Include() pour afficher données du User de la tâche, présent dans la table 'AspNetUsers'
-                                .Where(t => t.UserId == userId)
-                                .ToListAsync();
-            
+            IQueryable<Models.DomainModels.Task> tasksQuery = _context.Task
+                                                                .Include(t => t.PrioriteNavigation)  // .Include() pour afficher les labels présents dans la table 'Priorite'
+                                                                .Include(t => t.User); // .Include() pour afficher données du User de la tâche, présent dans la table 'AspNetUsers';
+            if (User.Identity.IsAuthenticated) {
+                // 👤 Utilisateur connecté
+                var userId = _userManager.GetUserId(User); // Récupérer l'ID de l'utilisateur connecté
+
+                tasksQuery = tasksQuery.Where(t => t.UserId == userId);
+            } 
+            else
+            {
+                // 👥 Utilisateur anonyme → User démo
+                const string DEMO_EMAIL = "demo@local.test";
+                var demoUser = await _userManager.FindByEmailAsync(DEMO_EMAIL);
+
+                tasksQuery = tasksQuery.Where(t => t.UserId == demoUser.Id);
+            }
+
+            var task = await tasksQuery.ToListAsync();
+
             return View(task);
         }
 
@@ -100,9 +113,10 @@ namespace ToDoListWebApp.Controllers
         // POST: Tasks/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DateCreation,DerniereModification,Nom,Description,Statut,DateLimite,Priorite,Categorie")] Models.DomainModels.Task task)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,DateCreation,DerniereModification,Nom,Description,Statut,DateLimite,Priorite,Categorie, UserId")] Models.DomainModels.Task task)
         {
             if (id != task.Id)
             {
@@ -159,6 +173,7 @@ namespace ToDoListWebApp.Controllers
 
 
         // POST: Tasks/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -197,7 +212,7 @@ namespace ToDoListWebApp.Controllers
 
 
         // Pour récupérer les tasks classées : Méthode appelée via JS en AJAX
-        public async Task<IActionResult> GetSortedTasks(string column, string order, string filter = "") 
+        public async Task<IActionResult> GetSortedAndFilteredTasks(string column, string order, string filter = "") 
         {
             var tasks = _context.Task.AsQueryable();
 

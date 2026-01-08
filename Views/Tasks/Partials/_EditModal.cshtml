@@ -18,6 +18,8 @@
                     @Html.HiddenFor(m => m.Task.DateCreation)
                     @Html.HiddenFor(m => m.Task.DerniereModification)
 
+                    @Html.HiddenFor(m => m.Task.UserId)  @* EN COURS *@
+
                     <p>
                         Créée le @Model.Task.DateCreation.ToString("dd/MM/yyyy à HH:mm")
                          / 
