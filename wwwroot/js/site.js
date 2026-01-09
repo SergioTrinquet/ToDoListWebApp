@@ -6,9 +6,14 @@ const tableBodyTaskIndex = document.querySelector("#body-table-index");
 const modalEdit = document.getElementById('modalEdit');
 const filterInput = document.querySelector("input[name='filterInput']");
 const filterAndSort = document.querySelector("#filter-and-sort-index");
+const displayWitnessTasks = document.querySelector("#toggle-author-tasks input[type='checkbox']");
+const selectSort = document.querySelector("#sortList");
+
+if (displayWitnessTasks) {
+    displayWitnessTasks.addEventListener('change', () => fetchTasks());
+}
 
 // Select pour le tri des tâches
-const selectSort = document.querySelector("#sortList");
 if (selectSort) { 
     const listFieldToSort = [
         { champ: "Nom", libelle: "Tâche" },
@@ -53,6 +58,10 @@ if (filterAndSort) {
             debouncedFetchTasks();
         }
     })
+    document.querySelector("#bt-delete-filter").addEventListener("click", () => {
+        filterInput.value = "";
+        filterInput.dispatchEvent(new Event("input"));
+    })
     function debounce(func, delay) {
         console.log(func, delay)
         let timerId;
@@ -66,22 +75,19 @@ if (filterAndSort) {
         return {
             "fieldToSort": selectSort.value,
             "sortingOrder": selectSort.options[selectSort.selectedIndex].getAttribute("data-order"),
-            "filterInputValue": filterInput.value.trim()
+            "filterInputValue": filterInput.value.trim(),
+            "displayWitnessTasks": displayWitnessTasks ? displayWitnessTasks.checked : false
         }
     }
-    function fetchTasks() { console.log("fetchTasks")
+    function fetchTasks() {
         const data = getDataSortAndFilter();
-        //console.warn("data.fieldToSort : ", data.fieldToSort, "data.sortingOrder", data.sortingOrder, "data.filterInputValue", data.filterInputValue) 
 
         data.filterInputValue = (data.filterInputValue.length < minCharToFilter ? "" : data.filterInputValue); // Cas ou saisie filter inf. à 3
-        //console.log("APRE TRAITEMENT : data.filterInputValue", data.filterInputValue)
 
-        fetch(`Tasks/GetSortedTasks?column=${data.fieldToSort}&order=${data.sortingOrder}&filter=${data.filterInputValue}`)
+        fetch(`Tasks/GetSortedAndFilteredTasks?column=${data.fieldToSort}&order=${data.sortingOrder}&filter=${data.filterInputValue}&displayDemoTasks=${data.displayWitnessTasks}`)
             .then(response => { return response.text() })
             .then(html => tableBodyTaskIndex.innerHTML = html);
     }
-
-    document.querySelector("#bt-delete-filter").addEventListener("input", () => filterInput.value = "");
 }
 //// FIN Filtre
 
@@ -102,7 +108,7 @@ document.querySelectorAll(".statut-checkbox").forEach(checkbox => {
         //    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         //    body: `id=${id}&statut=${statut}`
         //});
-        // Solution 2 : La plus élégante (lais necessite un DTO)
+        // Solution 2 : La plus élégante (mais necessite un DTO)
         fetch('Tasks/ToggleStatut', {
             method: 'POST',
             headers: {
@@ -134,7 +140,6 @@ if (tableBodyTaskIndex) {
             });
     })
 }
-
 
 
 document.addEventListener("submit", async e => {
