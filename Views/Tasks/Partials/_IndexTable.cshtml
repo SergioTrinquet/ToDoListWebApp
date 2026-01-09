@@ -57,7 +57,7 @@
                     <a asp-action="Delete" asp-route-id="@item.Id" class="material-symbols-rounded" data-popin="Supprimer">delete</a>
                 } else
                 {          
-                    <span class="material-symbols-rounded edit-task disabled" data-popin="Modifier: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas modifier une tâche qui n'est pas la vôtre.@msgModifyPartWhenNotAuthenticated" tabindex="0">Edit</span>
+                    <span class="material-symbols-rounded disabled" data-popin="Modifier: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas modifier une tâche qui n'est pas la vôtre.@msgModifyPartWhenNotAuthenticated">Edit</span>
                     <span class="material-symbols-rounded disabled" data-popin="Supprimer: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas supprimer une tâche qui n'est pas la vôtre.@msgDeletePartWhenNotAuthenticated">delete</span>
                 }
             </div>
