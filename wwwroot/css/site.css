@@ -158,19 +158,28 @@ header {
 }
 
 #toggle-author-tasks {
-    --height-toggle: 24px;
-    --margin-round-el-toggle: 3px;
+    --height-toggle: 28px;
+    --margin-round-el-toggle: 4px;
     --width-toggle: calc(var(--height-toggle) * 2);
     --width-round-el: calc(var(--height-toggle) - (var(--margin-round-el-toggle) * 2));
     --grow-when-active-round-el-toggle: 4px;
     --half-grow-when-active-round-el-toggle: calc(var(--grow-when-active-round-el-toggle) / 2);
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
     gap: 0.25rem;
+    margin-bottom: 1rem;
 
     input[type=checkbox] {
         height: 0;
         width: 0;
         visibility: hidden;
+    }
+
+    span {
+        width: 150px;
+        text-align: right;
+        line-height: 1rem;
     }
 
     label {
