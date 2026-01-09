@@ -8,8 +8,13 @@
 
     var msgModifyPartWhenNotAuthenticated = "";
     var msgDeletePartWhenNotAuthenticated = "";
-    if (UserAuthenticated == false) msgModifyPartWhenNotAuthenticated += " Inscrivez-vous/connectez-vous pour créer et modifier vos tâches.";
-    if (UserAuthenticated == false) msgDeletePartWhenNotAuthenticated += " Inscrivez-vous/connectez-vous pour créer et supprimer vos tâches.";
+    var msgTaskDonePartWhenNotAuthenticated = "";
+    if (UserAuthenticated == false)
+    {
+        msgModifyPartWhenNotAuthenticated += " Inscrivez-vous/connectez-vous pour créer et modifier vos tâches.";
+        msgDeletePartWhenNotAuthenticated += " Inscrivez-vous/connectez-vous pour créer et supprimer vos tâches.";
+        msgTaskDonePartWhenNotAuthenticated += " Inscrivez-vous/connectez-vous pour créer et valider vos tâches.";
+    }
 }
 
 @foreach (var item in Model)
@@ -19,7 +24,14 @@
         </td>
         <td class="checkbox-wrapper center">
             <div>
-                <input type="checkbox" class="statut-checkbox" @(item.Statut ? "checked" : "") data-id="@item.Id" />
+                @if (currentUserId == item.UserId)
+                {
+                    <input type="checkbox" class="statut-checkbox" @(item.Statut ? "checked" : "") data-id="@item.Id" />
+                } else
+                {
+                    <input type="checkbox" class="statut-checkbox" @(item.Statut ? "checked" : "") disabled="disabled"
+                           aria-label="L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas marquer comme 'Fait' une tâche qui n'est pas la vôtre.@msgTaskDonePartWhenNotAuthenticated" />
+                }
             </div>
         </td>
         <td class="data-filled nom">
@@ -53,12 +65,12 @@
             <div class="icons-action">
                 @if (currentUserId == item.UserId)
                 {
-                    <a class="material-symbols-rounded edit-task" data-id="@item.Id" data-popin="Modifier" tabindex="0">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="material-symbols-rounded" data-popin="Supprimer">delete</a>
+                    <a class="material-symbols-rounded edit-task" data-id="@item.Id" aria-label="Modifier" tabindex="0">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="material-symbols-rounded" aria-label="Supprimer">delete</a>
                 } else
                 {          
-                    <span class="material-symbols-rounded disabled" data-popin="Modifier: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas modifier une tâche qui n'est pas la vôtre.@msgModifyPartWhenNotAuthenticated">Edit</span>
-                    <span class="material-symbols-rounded disabled" data-popin="Supprimer: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas supprimer une tâche qui n'est pas la vôtre.@msgDeletePartWhenNotAuthenticated">delete</span>
+                    <span class="material-symbols-rounded disabled" aria-label="Modifier: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas modifier une tâche qui n'est pas la vôtre.@msgModifyPartWhenNotAuthenticated">Edit</span>
+                    <span class="material-symbols-rounded disabled" aria-label="Supprimer: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas supprimer une tâche qui n'est pas la vôtre.@msgDeletePartWhenNotAuthenticated">delete</span>
                 }
             </div>
         </td>       
