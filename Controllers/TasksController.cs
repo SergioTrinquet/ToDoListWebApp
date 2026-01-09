@@ -18,10 +18,21 @@ namespace ToDoListWebApp.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public TasksController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        private readonly string _demoEmail;
+
+        public TasksController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
+            _demoEmail = configuration.GetValue<string>("DemoUser:Email") ?? "";
+            // ou //_demoEmail = configuration["DemoUser:Email"] ?? "";
+        }
+
+        protected string? GetCurrentUserId()
+        {
+            return User?.Identity?.IsAuthenticated == true 
+                ? _userManager.GetUserId(User) // Récupérer l'ID de l'utilisateur connecté
+                : null;
         }
 
         // GET: Tasks
@@ -31,17 +42,17 @@ namespace ToDoListWebApp.Controllers
             IQueryable<Models.DomainModels.Task> tasksQuery = _context.Task
                                                                 .Include(t => t.PrioriteNavigation)  // .Include() pour afficher les labels présents dans la table 'Priorite'
                                                                 .Include(t => t.User); // .Include() pour afficher données du User de la tâche, présent dans la table 'AspNetUsers';
-            if (User.Identity.IsAuthenticated) {
-                // 👤 Utilisateur connecté
-                var userId = _userManager.GetUserId(User); // Récupérer l'ID de l'utilisateur connecté
 
+            var userId = GetCurrentUserId();
+            if (userId != null) {
+                // 👤 Utilisateur connecté
                 tasksQuery = tasksQuery.Where(t => t.UserId == userId);
             } 
             else
             {
                 // 👥 Utilisateur anonyme → User démo
-                const string DEMO_EMAIL = "demo@local.test";
-                var demoUser = await _userManager.FindByEmailAsync(DEMO_EMAIL);
+                var demoUser = await _userManager.FindByEmailAsync(_demoEmail);
+                if (demoUser == null) return View(new List<Models.DomainModels.Task>());
 
                 tasksQuery = tasksQuery.Where(t => t.UserId == demoUser.Id);
             }
@@ -212,7 +223,7 @@ namespace ToDoListWebApp.Controllers
 
 
         // Pour récupérer les tasks classées : Méthode appelée via JS en AJAX
-        public async Task<IActionResult> GetSortedAndFilteredTasks(string column, string order, string filter = "") 
+        public async Task<IActionResult> GetSortedAndFilteredTasks(string column, string order, string filter = "", bool displayDemoTasks = false) 
         {
             var tasks = _context.Task.AsQueryable();
 
@@ -221,7 +232,27 @@ namespace ToDoListWebApp.Controllers
                 tasks = tasks
                     .Include(t => t.PrioriteNavigation)
                     .Include(t => t.User);
-                    
+
+                var demoUser = await _userManager.FindByEmailAsync(_demoEmail);
+                if (User?.Identity?.IsAuthenticated == true)
+                {
+                    // 👤 Utilisateur connecté
+                    var userId = _userManager.GetUserId(User); // Récupérer l'ID de l'utilisateur connecté
+                    if (displayDemoTasks)
+                    {
+                        tasks = tasks.Where(t => t.UserId == userId || t.UserId == demoUser.Id);
+                    }
+                    else
+                    {
+                        tasks = tasks.Where(t => t.UserId == userId);
+                    }
+                }
+                else
+                {
+                    // 👥 Utilisateur anonyme → User démo
+                    tasks = tasks.Where(t => t.UserId == demoUser.Id);
+                }
+
 
                 if (filter != "")
                 {
