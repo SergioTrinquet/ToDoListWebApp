@@ -5,12 +5,12 @@
 @{
     ViewData["Title"] = "To do list";
 
-    var UserAuthenticated = User.Identity.IsAuthenticated;
+    var UserAuthenticated = User?.Identity?.IsAuthenticated;
 }
 
 <div class="head-index">
     <h1>Ma liste de trucs à faire</h1>
-    @if (UserAuthenticated)
+    @if (UserAuthenticated == true)
     {
         <a class="bt-add-task" asp-action="Create">
             <span class="material-symbols-rounded">add_circle</span>
@@ -28,11 +28,11 @@
 @* TEST *@
 @* <div>=> @User.Identity?.Name</div> *@
 
-@if (UserAuthenticated)
+@if (UserAuthenticated == true)
 {
     <div id="toggle-author-tasks">
-        Afficher les tâches du profil Démo
-        <input type="checkbox" checked="checked" id="switch" /><label for="switch">Toggle</label>
+        <span>Afficher les tâches du profil Démo</span>
+        <input type="checkbox" id="switch" /><label for="switch">Toggle</label>
     </div>
 } else
 {
