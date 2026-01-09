@@ -1,8 +1,15 @@
 ﻿@using ToDoListWebApp.Helpers
+@using System.Security.Claims
 @model IEnumerable<ToDoListWebApp.Models.DomainModels.Task>
 
 @{
-    var UserAuthenticated = User.Identity.IsAuthenticated;
+    var currentUserId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
+    var UserAuthenticated = User?.Identity?.IsAuthenticated;
+
+    var msgModifyPartWhenNotAuthenticated = "";
+    var msgDeletePartWhenNotAuthenticated = "";
+    if (UserAuthenticated == false) msgModifyPartWhenNotAuthenticated += " Inscrivez-vous/connectez-vous pour créer et modifier vos tâches.";
+    if (UserAuthenticated == false) msgDeletePartWhenNotAuthenticated += " Inscrivez-vous/connectez-vous pour créer et supprimer vos tâches.";
 }
 
 @foreach (var item in Model)
@@ -44,17 +51,17 @@
         </td>
         <td>
             <div class="icons-action">
-                @if (UserAuthenticated)
+                @if (currentUserId == item.UserId)
                 {
                     <a class="material-symbols-rounded edit-task" data-id="@item.Id" data-popin="Modifier" tabindex="0">Edit</a>
                     <a asp-action="Delete" asp-route-id="@item.Id" class="material-symbols-rounded" data-popin="Supprimer">delete</a>
                 } else
-                {
-                    <a class="material-symbols-rounded edit-task disabled" data-popin="Modifier: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas modifier une tâche autre que la vôtre. Inscrivez-vous/connectez-vous pour créer/modifier vos tâches." tabindex="0">Edit</a>
-                    <a class="material-symbols-rounded disabled" data-popin="Supprimer: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas supprimer une tâche autre que la vôtre. Inscrivez-vous/connectez-vous pour créer/supprimer vos tâches.">delete</a>
+                {          
+                    <span class="material-symbols-rounded edit-task disabled" data-popin="Modifier: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas modifier une tâche qui n'est pas la vôtre.@msgModifyPartWhenNotAuthenticated" tabindex="0">Edit</span>
+                    <span class="material-symbols-rounded disabled" data-popin="Supprimer: L'auteur de cette tâche est le profil Démo. Vous ne pouvez pas supprimer une tâche qui n'est pas la vôtre.@msgDeletePartWhenNotAuthenticated">delete</span>
                 }
             </div>
-        </td>
+        </td>       
     </tr>
 }
 
