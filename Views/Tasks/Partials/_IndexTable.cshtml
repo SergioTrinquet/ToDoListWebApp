@@ -22,7 +22,7 @@
     <tr>
         <td class="@HtmlHelpers.setCSSclassPriorite(item.Priorite)" title="Priorité: @item.PrioriteNavigation.Libelle">
         </td>
-        <td class="checkbox-wrapper center">
+        <td class="done-chbx">
             <div>
                 @if (currentUserId == item.UserId)
                 {
@@ -34,19 +34,19 @@
                 }
             </div>
         </td>
-        <td class="data-filled nom">
+        <td class="tache data-filled" data-label="Tâche">
             @Html.DisplayFor(modelItem => item.Nom)
         </td>
-        <td class="data-filled">
+        <td class="description data-filled" data-label="Description">
             @Html.DisplayFor(modelItem => item.Description)
         </td>
-        <td class="data-filled center">
+        <td class="date-limite" data-label="A faire avant le">
             @Html.DisplayFor(modelItem => item.DateLimite)
         </td>
-        <td class="data-filled center">
+        <td class="categorie data-filled" data-label="Catégorie">
             @Html.DisplayFor(modelItem => item.Categorie)
         </td>
-        <td>
+        <td class="auteur" data-label="@item.User?.UserName">
             @{
                 var userNamePicto = HtmlHelpers.SetUserShortName(item.User?.UserName);
             }
@@ -54,14 +54,14 @@
                 @userNamePicto.shortName
             </div>
         </td>
-        <td>
+        <td class="date-creation-modification">
             @{
                 var creationOuModif = HtmlHelpers.FormatLibelleDateCreaModif(item.DateCreation, item.DerniereModification);
             }
             <div class="small-libelle">@creationOuModif.verb</div>
             <div class="data-filled">@creationOuModif.date</div>
         </td>
-        <td>
+        <td class="edit-delete-icons">
             <div class="icons-action">
                 @if (currentUserId == item.UserId)
                 {
