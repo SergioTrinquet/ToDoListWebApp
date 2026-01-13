@@ -1,0 +1,10 @@
+﻿@model DateTime
+
+@if (Model == default(DateTime))
+{
+    <span>-</span>
+}
+else
+{
+    @Model.ToString("dd/MM/yyyy 'à' HH:mm")
+}
