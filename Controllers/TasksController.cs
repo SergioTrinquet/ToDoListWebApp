@@ -114,8 +114,6 @@ namespace ToDoListWebApp.Controllers
                 return NotFound();
             }
 
-            //ViewData["PrioriteSelect"] = _context.Priorite.ToList();  // TEST: Pas retenu
-
             var vm = BuildTaskViewModel(task); // ViewModel pour alimenter aussi le Select 'Priorite'
             return PartialView("./Partials/_EditModal", vm);
         }
@@ -164,6 +162,7 @@ namespace ToDoListWebApp.Controllers
 
 
         // GET: Tasks/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -202,15 +201,6 @@ namespace ToDoListWebApp.Controllers
 
         // Méthode pour changer le statut d'une task (fait/non fait) : Méthode appelée via JS en AJAX
         [HttpPost]
-        //public async Task<IActionResult> ToggleStatut(int id, bool statut)
-        //{
-        //    var task = await _context.Task.FindAsync(id);
-        //    if (task == null) 
-        //        return NotFound();
-        //    task.Statut = statut;
-        //    await _context.SaveChangesAsync();
-        //    return Ok();
-        //}
         public async Task<IActionResult> ToggleStatut([FromBody] ToggleStatutDTO dto)
         {
             var task = await _context.Task.FindAsync(dto.Id);
