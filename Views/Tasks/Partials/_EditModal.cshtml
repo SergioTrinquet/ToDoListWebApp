@@ -1,4 +1,9 @@
-﻿@model ToDoListWebApp.Models.ViewModels.TaskViewModel
+﻿@using System.Security.Claims
+@model ToDoListWebApp.Models.ViewModels.TaskViewModel
+
+@{
+    var currentUserId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
+}
 
 <div class="modal fade" id="editTaskModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -17,8 +22,7 @@
                     <input type="hidden" asp-for="Task.Id" />
                     @Html.HiddenFor(m => m.Task.DateCreation)
                     @Html.HiddenFor(m => m.Task.DerniereModification)
-
-                    @Html.HiddenFor(m => m.Task.UserId)  @* EN COURS *@
+                    @Html.HiddenFor(m => m.Task.UserId)
 
                     <p>
                         Créée le @Model.Task.DateCreation.ToString("dd/MM/yyyy à HH:mm")
@@ -63,7 +67,7 @@
                         <label asp-for="Task.Categorie"></label>
                         <input asp-for="Task.Categorie" class="form-control" maxlength="50" disabled="@Model.Task!.Statut" />
                     </div>
-                    @if (Model.Task!.Statut == false)
+                    @if (Model.Task!.Statut == false && currentUserId == Model.Task.UserId)
                     {
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
