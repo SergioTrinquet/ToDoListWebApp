@@ -52,3 +52,5 @@ L'appli a été développée avec la configuration suivante :
 Update-Database
 ```
 
+5. Lancer l'application depuis Visual Studio
+
