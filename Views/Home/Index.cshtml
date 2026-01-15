@@ -2,8 +2,23 @@
     ViewData["Title"] = "Accueil";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Bienvenue</h1>
-    <p>Le but de cet app ici était de me familiariser avec .NET MVC / C#.</p> 
-    <a asp-controller="Tasks" asp-action="Index">Cliquez ici</a> pour voir votre To Do List</p>
+<div id="pg-accueil">
+    <h1 class="display-4 text-center">Bienvenue</h1>
+    <p>
+        Cette app a été créée dans le but de me familiariser avec le C#, ASP.NET Core MVC et Entity Framework Core.<br />
+        Ce projet a donc été réalisé dans un objectif de montée en compétences : Il est volontairement simple et pédagogique.
+    </p>
+    <p>
+        Il s'agit d'une application web de gestion de tâches permettant à un utilisateur authentifié de créer, modifier, supprimer et suivre l’état de ses tâches personnelles.
+        <br />
+        L’application intègre :
+        <ul>
+            <li>un système d’authentification basé sur ASP.NET Core Identity</li>
+            <li>une gestion des tâches par utilisateur</li>
+            <li>un profil de démonstration permettant de visualiser le fonctionnement sans créer de compte</li>
+        </ul>
+    </p>
+    <p>
+        <a asp-controller="Tasks" asp-action="Index">Cliquez ici</a> pour voir la liste des tâches
+    </p>
 </div>
