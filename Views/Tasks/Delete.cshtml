@@ -1,7 +1,10 @@
-﻿@model ToDoListWebApp.Models.DomainModels.Task
+﻿@using System.Security.Claims
+@model ToDoListWebApp.Models.DomainModels.Task
 
 @{
     ViewData["Title"] = "Suppression";
+
+    var currentUserId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <div class="center header-delete">
@@ -59,10 +62,12 @@
             @Html.DisplayFor(model => model.Categorie)
         </dd>
     </dl>
-    
+    @if (currentUserId == Model.UserId)
+    {
     <form asp-action="Delete" class="form-button-delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Supprimer" class="btn btn-danger" />
         <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
     </form>
+     }
 </div>
