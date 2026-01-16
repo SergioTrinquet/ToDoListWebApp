@@ -8,7 +8,7 @@ L’application intègre :
 - une gestion des tâches par utilisateur
 - un profil de démonstration permettant de visualiser le fonctionnement sans créer de compte
 
-Ce projet a été réalisé dans un objectif de montée en compétences et de présentation dans un portfolio.
+Ce projet a été réalisé dans un objectif de montée en compétences.
 
 ---
 
