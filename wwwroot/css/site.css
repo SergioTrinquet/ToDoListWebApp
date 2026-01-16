@@ -15,6 +15,9 @@
     --tooltip-width: 200px;
     --tooltip-line-height: 1rem;
     --tooltip-size-arrow: 7px;
+    --sticky-top-position: 55px;
+    --width-sticky-bt-nvelle-tache-default-screen: 250px;
+    --width-sticky-bt-nvelle-tache-small-screen: 50%;
 }
 
 
@@ -99,13 +102,46 @@ input#switch:focus-visible + label {
     display: flex;
     gap: .5rem;
     padding-block-start: 1rem;
-    margin-block-end: 1rem;
+
     h1 {
         margin-bottom: 0;
         line-height: 2rem;
     }
+
     > *:last-child {
         margin-left: auto;
+    }
+
+    &:has(.bt-add-task.sticky) {
+        display: contents;
+
+        & + #wrapper-filter-and-sort-index {
+            box-shadow: 10px 0 0 var(--body-bgcolor), -10px 0 0 var(--body-bgcolor), 0 -10px 0 var(--body-bgcolor);
+
+            #toggle-author-tasks {
+                margin-right: min(calc(var(--width-sticky-bt-nvelle-tache-default-screen) + 1rem), calc(var(--width-sticky-bt-nvelle-tache-small-screen) + 1rem));
+            }
+
+            &:before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                width: 94%;
+                bottom: 8px;
+                height: 30px;
+                left: 3%;
+                border-radius: 0 0 50% 50%;
+                box-shadow: 0px 10px 8px 8px rgba(168, 168, 168, 0.4);
+            }
+
+            &:after {
+                content: "";
+                inset: 0;
+                background: var(--body-bgcolor);
+                position: absolute;
+                z-index: -1;
+            }
+        }
     }
 }
 
@@ -131,6 +167,19 @@ input#switch:focus-visible + label {
     text-decoration: none;
     padding: 0.5rem 1rem;
     line-height: 1.2rem;
+
+    @media (max-width: 768px) {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9em;
+        line-height: 1rem;
+    }
+
+    &.sticky {
+        position: sticky;
+        z-index: 2;
+        top: calc(var(--sticky-top-position) + .75rem);
+        width: min(var(--width-sticky-bt-nvelle-tache-default-screen), var(--width-sticky-bt-nvelle-tache-small-screen));
+    }
 
     > .material-symbols-rounded {
         margin-right: 0.5rem;
@@ -188,6 +237,13 @@ input#switch:focus-visible + label {
     font-weight: 500;
 }
 
+#wrapper-filter-and-sort-index {
+    position: sticky;
+    z-index: 1;
+    background-color: var(--body-bgcolor);
+    top: var(--sticky-top-position);
+}
+
 #toggle-author-tasks {
     --height-toggle: 28px;
     --margin-round-el-toggle: 4px;
@@ -200,6 +256,7 @@ input#switch:focus-visible + label {
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 1rem;
+    transition: 0.3s all;
 
     input[type=checkbox] {
         position: absolute;
@@ -262,7 +319,7 @@ input#switch:focus-visible + label {
     }
 }
 
-#filter-and-sort-index {
+.filter-and-sort-index {
     display: flex;
 
     > * {

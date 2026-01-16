@@ -5,9 +5,10 @@
 const tableBodyTaskIndex = document.querySelector("#body-table-index");
 const modalEdit = document.getElementById('modalEdit');
 const filterInput = document.querySelector("input[name='filterInput']");
-const filterAndSort = document.querySelector("#filter-and-sort-index");
+const filterAndSort = document.querySelector("#wrapper-filter-and-sort-index");
 const displayWitnessTasks = document.querySelector("#toggle-author-tasks input[type='checkbox']");
 const selectSort = document.querySelector("#sortList");
+const btAddTask = document.querySelector(".bt-add-task");
 
 if (displayWitnessTasks) {
     displayWitnessTasks.addEventListener('change', () => fetchTasks());
@@ -70,7 +71,6 @@ if (filterAndSort) {
             timerId = setTimeout(() => func.apply(this, args), delay);
         };
     }
-
     function getDataSortAndFilter() {
         return {
             "fieldToSort": selectSort.value,
@@ -88,8 +88,15 @@ if (filterAndSort) {
             .then(response => { return response.text() })
             .then(html => tableBodyTaskIndex.innerHTML = html);
     }
+
+
+    // Pour rendre éléments de filtres, tri et bouton sticky quand scroll down
+    window.addEventListener("scroll", () => {
+        const scrollY = window.scrollY || window.pageYOffset;
+        btAddTask.classList.toggle("sticky", (scrollY > 80));
+    })
 }
-//// FIN Filtre
+
 
 
 
@@ -98,17 +105,6 @@ document.querySelectorAll(".statut-checkbox").forEach(checkbox => {
     checkbox.addEventListener('change', (e) => {
         const id = e.target.getAttribute("data-id");
         const statut = e.target.checked;
-        // Solution 1: La plus simple
-        //fetch(`Tasks/ToggleStatut?id=${id}&statut=${statut}`, {
-        //    method: 'POST'
-        //});
-        // Solution 1 bis
-        //fetch('Tasks/ToggleStatut', {
-        //    method: 'POST',
-        //    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        //    body: `id=${id}&statut=${statut}`
-        //});
-        // Solution 2 : La plus élégante (mais necessite un DTO)
         fetch('Tasks/ToggleStatut', {
             method: 'POST',
             headers: {
