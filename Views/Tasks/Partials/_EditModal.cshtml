@@ -50,7 +50,10 @@
 
                     <div class="mb-3">
                         <label asp-for="Task.DateLimite"></label>
-                        <input asp-for="Task.DateLimite" class="form-control" disabled="@Model.Task!.Statut" value="@(Model.Task.DateLimite?.ToString("yyyy-MM-dd"))" />
+                        <input asp-for="Task.DateLimite" class="form-control" disabled="@Model.Task!.Statut" 
+                            value="@(Model.Task.DateLimite?.ToString("yyyy-MM-dd"))" 
+                            min="@DateOnly.FromDateTime(DateTime.Today).ToString("yyyy-MM-dd")"
+                        />
                     </div>
 
                     <div class="mb-3">
