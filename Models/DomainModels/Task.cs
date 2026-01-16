@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using ToDoListWebApp.Models.Validation;
 
 namespace ToDoListWebApp.Models.DomainModels
 {
@@ -32,6 +33,7 @@ namespace ToDoListWebApp.Models.DomainModels
         [DisplayName("Fait")]
         public bool Statut { get; set; }
 
+        [DateNotInPast]
         [DataType(DataType.Date)] // Ensures only date (no time) in UI helpers
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [DisplayName("A faire avant")]
