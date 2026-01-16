@@ -26,7 +26,7 @@ Ce projet a été réalisé dans un objectif de montée en compétences et de pr
 
 ### Prérequis
 L'appli a été développée avec la configuration suivante :
-- .NET SDK 10.0
+- .NET SDK 8.0
 - Visual Studio 2022
 - SQL Server Express / LocalDB
 
