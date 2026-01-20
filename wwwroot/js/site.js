@@ -5,10 +5,9 @@
 const tableBodyTaskIndex = document.querySelector("#body-table-index");
 const modalEdit = document.getElementById('modalEdit');
 const filterInput = document.querySelector("input[name='filterInput']");
-const filterAndSort = document.querySelector("#wrapper-filter-and-sort-index");
 const displayWitnessTasks = document.querySelector("#toggle-author-tasks input[type='checkbox']");
 const selectSort = document.querySelector("#sortList");
-const btAddTask = document.querySelector(".bt-add-task");
+const minCharToFilter = 3;
 
 if (displayWitnessTasks) {
     displayWitnessTasks.addEventListener('change', () => fetchTasks());
@@ -38,11 +37,10 @@ if (selectSort) {
 }
 
 // Filtre
-if (filterAndSort) { 
+if (filterInput) { 
     let resetLastValue = null;
     let forbiddenKey = null;
     const timeDebounce = 500;
-    const minCharToFilter = 3;
     const debouncedFetchTasks = debounce(fetchTasks, timeDebounce);
 
     filterInput.addEventListener('keydown', e => {
@@ -71,33 +69,35 @@ if (filterAndSort) {
             timerId = setTimeout(() => func.apply(this, args), delay);
         };
     }
-    function getDataSortAndFilter() {
-        return {
-            "fieldToSort": selectSort.value,
-            "sortingOrder": selectSort.options[selectSort.selectedIndex].getAttribute("data-order"),
-            "filterInputValue": filterInput.value.trim(),
-            "displayWitnessTasks": displayWitnessTasks ? displayWitnessTasks.checked : false
-        }
-    }
-    function fetchTasks() {
-        const data = getDataSortAndFilter();
 
-        data.filterInputValue = (data.filterInputValue.length < minCharToFilter ? "" : data.filterInputValue); // Cas ou saisie filter inf. à 3
+}
 
-        fetch(`Tasks/GetSortedAndFilteredTasks?column=${data.fieldToSort}&order=${data.sortingOrder}&filter=${data.filterInputValue}&displayDemoTasks=${data.displayWitnessTasks}`)
-            .then(response => { return response.text() })
-            .then(html => tableBodyTaskIndex.innerHTML = html);
-    }
-
-
-    // Pour rendre éléments de filtres, tri et bouton sticky quand scroll down
+// Pour rendre éléments de filtres, tri et bouton sticky quand scroll down, seulement pour pg 'Tasks'
+if (selectSort) {
     window.addEventListener("scroll", () => {
         const scrollY = window.scrollY || window.pageYOffset;
-        btAddTask.classList.toggle("sticky", (scrollY > 80));
+        document.querySelector("main").classList.toggle("sticky-header-controls", (scrollY > 80));
     })
 }
 
 
+function getDataSortAndFilter() {
+    return {
+        "fieldToSort": selectSort.value,
+        "sortingOrder": selectSort.options[selectSort.selectedIndex].getAttribute("data-order"),
+        "filterInputValue": filterInput.value.trim(),
+        "displayWitnessTasks": displayWitnessTasks ? displayWitnessTasks.checked : false
+    }
+}
+function fetchTasks() {
+    const data = getDataSortAndFilter();
+
+    data.filterInputValue = (data.filterInputValue.length < minCharToFilter ? "" : data.filterInputValue); // Cas ou saisie filter inf. à 3
+
+    fetch(`Tasks/GetSortedAndFilteredTasks?column=${data.fieldToSort}&order=${data.sortingOrder}&filter=${data.filterInputValue}&displayDemoTasks=${data.displayWitnessTasks}`)
+        .then(response => { return response.text() })
+        .then(html => tableBodyTaskIndex.innerHTML = html);
+}
 
 
 // Page Index : Gestion de l'évènement sur checkbox pour Statut
