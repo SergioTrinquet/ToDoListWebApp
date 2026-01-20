@@ -212,7 +212,7 @@ namespace ToDoListWebApp.Controllers
         }
 
 
-        // Pour récupérer les tasks classées : Méthode appelée via JS en AJAX
+        // Pour récupérer les tasks classées et filtrées : Méthode appelée via JS en AJAX
         public async Task<IActionResult> GetSortedAndFilteredTasks(string column, string order, string filter = "", bool displayDemoTasks = false) 
         {
             var tasks = _context.Task.AsQueryable();
