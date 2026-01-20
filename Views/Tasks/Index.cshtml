@@ -25,6 +25,17 @@
     }
 </div>
 
+@if (UserAuthenticated == false)
+{
+    <div id="alert-user-demo" class="alert alert-warning mt-3" role="alert">
+        <p class="alert-user-demo-title">Profil Utilisateur Démo:</p>
+        <p>Les tâches présentes ci-dessous ne sont là que pour vous permettre de visualiser le rendu d'une liste.</p>
+        <p>Elles ne peuvent ni être supprimées, ni être modifiées par vous.</p>
+        <p>Vous avez la possibilité de créer/modifier/supprimer des tâches en <a asp-area="Identity" asp-page="/Account/Login">vous connectant</a> ou, si ce n'est déjà fait en <a asp-area="Identity" asp-page="/Account/Register">créant au préalable un compte</a>.</p>
+        Enjoy !
+    </div>
+}
+
 <div id="wrapper-filter-and-sort-index" class="pt-3 pb-4">
 
     @if (UserAuthenticated == true)
@@ -33,42 +44,35 @@
             <span>Afficher les tâches du profil Démo</span>
             <input type="checkbox" id="switch" /><label for="switch">Toggle</label>
         </div>
-    } else
-    {
-        <div id="alert-user-demo" class="alert alert-warning" role="alert">
-            <p class="alert-user-demo-title">Profil Utilisateur Démo:</p>
-            <p>Les tâches présentes ci-dessous ne sont là que pour vous permettre de visualiser le rendu d'une liste.</p>
-            <p>Elles ne peuvent ni être supprimées, ni être modifiées par vous.</p>
-            <p>Vous avez la possibilité de créer/modifier/supprimer des tâches en <a asp-area="Identity" asp-page="/Account/Login">vous connectant</a> ou, si ce n'est déjà fait en <a asp-area="Identity" asp-page="/Account/Register">créant au préalable un compte</a>.</p>
-            Enjoy !
-        </div>
     }
 
-    <div class="filter-and-sort-index">
+    @if (Model.Count() > 0) {
+        <div class="filter-and-sort-index">
 
-        <div class="filter-index">
-            <label>Classer par</label>
-            <select id="sortList" class="form-select">
-                <option value="-1">ordre des tâches créées</option>
-            </select>
-        </div>
+            <div class="filter-index">
+                <label>Classer par</label>
+                <select id="sortList" class="form-select">
+                    <option value="-1">ordre des tâches créées</option>
+                </select>
+            </div>
 
-        <div class="sort-index">
-            <label>Filtrer par</label>
-            <div class="input-group">
-                <input type="text" name="filterInput" class="form-control" maxlength="30" placeholder="Nom de la tâche ou description" aria-label="Nom de la tâche ou description" aria-describedby="basic-addon2">
-                <div class="msg-erreur">Au moins 3 caractères</div>
-                <div class="input-group-append">
-                    <button id="bt-delete-filter" class="btn btn-outline-secondary">
-                        <span class=" material-symbols-rounded">close_small</span>
-                    </button>
+            <div class="sort-index">
+                <label>Filtrer par</label>
+                <div class="input-group">
+                    <input type="text" name="filterInput" class="form-control" maxlength="30" placeholder="Nom de la tâche ou description" aria-label="Nom de la tâche ou description" aria-describedby="basic-addon2">
+                    <div class="msg-erreur">Au moins 3 caractères</div>
+                    <div class="input-group-append">
+                        <button id="bt-delete-filter" class="btn btn-outline-secondary">
+                            <span class=" material-symbols-rounded">close_small</span>
+                        </button>
+                    </div>
                 </div>
             </div>
+
         </div>
-
-    </div>
-
+    }
 </div>
+
 
 <table class="table table--index">
     <thead>
