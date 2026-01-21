@@ -83,9 +83,9 @@ if (selectSort) {
 
 function getDataSortAndFilter() {
     return {
-        "fieldToSort": selectSort.value,
-        "sortingOrder": selectSort.options[selectSort.selectedIndex].getAttribute("data-order"),
-        "filterInputValue": filterInput.value.trim(),
+        "fieldToSort": selectSort?.value || "",
+        "sortingOrder": selectSort?.options[selectSort.selectedIndex].getAttribute("data-order"),
+        "filterInputValue": filterInput?.value.trim() || "",
         "displayWitnessTasks": displayWitnessTasks ? displayWitnessTasks.checked : false
     }
 }
