@@ -15,11 +15,14 @@
         msgDeletePartWhenNotAuthenticated += " Inscrivez-vous/connectez-vous pour créer et supprimer vos tâches.";
         msgTaskDonePartWhenNotAuthenticated += " Inscrivez-vous/connectez-vous pour créer et valider vos tâches.";
     }
+
+    int counter = 0;
 }
 
 @foreach (var item in Model)
 {
-    <tr>
+    ++counter;
+    <tr @(counter == 1 ? "data-nb-tasks=" + Model.Count() : "")>
         <td class="@HtmlHelpers.setCSSclassPriorite(item.Priorite)" title="Priorité: @item.PrioriteNavigation.Libelle">
         </td>
         <td class="done-chbx">

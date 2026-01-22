@@ -1,7 +1,7 @@
 ﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-// Page Index
+// Page /Tasks (Tasks/Index.cshtml)
 const tableBodyTaskIndex = document.querySelector("#body-table-index");
 const modalEdit = document.getElementById('modalEdit');
 const filterInput = document.querySelector("input[name='filterInput']");
@@ -73,7 +73,7 @@ if (filterInput) {
 }
 
 // Pour rendre éléments de filtres, tri et bouton sticky quand scroll down, seulement pour pg 'Tasks'
-if (selectSort) {
+if (displayWitnessTasks || selectSort) {
     window.addEventListener("scroll", () => {
         const scrollY = window.scrollY || window.pageYOffset;
         document.querySelector("main").classList.toggle("sticky-header-controls", (scrollY > 80));
@@ -96,8 +96,18 @@ function fetchTasks() {
 
     fetch(`Tasks/GetSortedAndFilteredTasks?column=${data.fieldToSort}&order=${data.sortingOrder}&filter=${data.filterInputValue}&displayDemoTasks=${data.displayWitnessTasks}`)
         .then(response => { return response.text() })
-        .then(html => tableBodyTaskIndex.innerHTML = html);
+        .then(html => {
+            tableBodyTaskIndex.innerHTML = html;
+            setNbTasksLabel();
+        });
 }
+
+function setNbTasksLabel() {
+    const nbTasks = tableBodyTaskIndex.querySelector("[data-nb-tasks]")?.dataset.nbTasks || 0;
+    document.querySelector("#nb-tasks").innerHTML = (nbTasks > 0 ? `<span>${nbTasks}</span> tâche${nbTasks > 1 ? "s" : ""}` : "");
+}
+
+document.addEventListener("DOMContentLoaded", e => setNbTasksLabel());
 
 
 // Page Index : Gestion de l'évènement sur checkbox pour Statut

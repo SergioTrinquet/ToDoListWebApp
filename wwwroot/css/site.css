@@ -137,6 +137,15 @@ main.sticky-header-controls {
             z-index: -1;
         }
     }
+
+    div:has(> #nb-tasks) {
+        position: absolute;
+        top: 1.4rem;
+        transform: translateY(0px);
+    }
+    #nb-tasks {
+        font-size: 1.4rem;
+    }
 }
 
 .head-index {
@@ -396,6 +405,29 @@ main.sticky-header-controls {
 
     &:hover, &:focus {
         color: #000;
+    }
+}
+
+div:has(> #nb-tasks) {
+    transform: translateY(0.5rem);
+}
+#nb-tasks {
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+
+    > span {
+        border-radius: 5px;
+        padding-inline: 0.2rem;
+        background-color: var(--secondary-bg-color);
+        color: #fff;
+    }
+
+    &:empty {
+        display: none;
     }
 }
 
