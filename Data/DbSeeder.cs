@@ -14,16 +14,11 @@ public static class DbSeeder
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
         var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
         // USER DEMO
         var demoEmail = configuration["DemoUser:Email"];
         var demoPassword = configuration["DemoUser:Password"];
-
-        logger.LogInformation("Entrée dans le Seed; Email: {HasEmail}", !string.IsNullOrEmpty(demoEmail));
-        logger.LogInformation("Entrée dans le Seed; Password: {HasPassword}", !string.IsNullOrEmpty(demoPassword));
-
 
         if (string.IsNullOrWhiteSpace(demoEmail) || string.IsNullOrWhiteSpace(demoPassword))
         {
@@ -32,7 +27,7 @@ public static class DbSeeder
             return;
         }
 
-        // PRIORITES
+        // Création données pour table PRIORITE
         if (!context.Priorite.Any())
         {
             context.Priorite.AddRange(
@@ -64,7 +59,7 @@ public static class DbSeeder
             }
         }
 
-        // TASKS DEMO
+        // Création données pour TASKS DEMO
         if (!context.Task.Any(t => t.UserId == demoUser.Id))
         {
             // Check avant d'alimenter prop. int? 'Propriete' dans ToDoTask, 
