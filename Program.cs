@@ -17,8 +17,8 @@ builder.Services.AddControllersWithViews();
 var app = builder.Build();
 
 /// A SUPPRIMER PLUS TARD ////
-//var logger = app.Services.GetRequiredService<ILogger<Program>>();
-//logger.LogWarning("ENVIRONMENT = {Env}", app.Environment.EnvironmentName);
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogWarning("ENVIRONMENT = {Env}", app.Environment.EnvironmentName);
 /// FIN : A SUPPRIMER PLUS TARD ////
 
 // Configure the HTTP request pipeline.
@@ -56,7 +56,8 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        //var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
         logger.LogError(ex, "Une erreur a eu lieu pendant la migration de la base de donnée.");
     }
 }
