@@ -58,4 +58,10 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+// Pour alimenter en prod une base de données avec des données de démo
+if (app.Environment.IsProduction())
+{
+    await DbSeeder.SeedAsync(app.Services);
+}
+
 app.Run();
