@@ -16,6 +16,11 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+/// A SUPPRIMER PLUS TARD ////
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogWarning("ENVIRONMENT = {Env}", app.Environment.EnvironmentName);
+/// FIN : A SUPPRIMER PLUS TARD ////
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
