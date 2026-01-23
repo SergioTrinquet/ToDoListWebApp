@@ -36,9 +36,9 @@ public static class DbSeeder
         if (!context.Priorite.Any())
         {
             context.Priorite.AddRange(
-                new Priorite { Id = 1, Libelle = "Basse" },
-                new Priorite { Id = 2, Libelle = "Moyenne" },
-                new Priorite { Id = 3, Libelle = "Haute" }
+                new Priorite { Libelle = "basse" },
+                new Priorite { Libelle = "moyenne" },
+                new Priorite { Libelle = "haute" }
             );
 
             await context.SaveChangesAsync();
