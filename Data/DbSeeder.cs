@@ -4,9 +4,10 @@ using ToDoListWebApp.Data;
 using ToDoListWebApp.Models;
 using Microsoft.Extensions.Configuration;
 using TaskEntity = ToDoListWebApp.Models.DomainModels.Task;
+using ToDoListWebApp.Models.DomainModels;
 public static class DbSeeder
 {
-    public static async Task SeedAsync(IServiceProvider services)
+    public static async System.Threading.Tasks.Task SeedAsync(IServiceProvider services)
     {
         using var scope = services.CreateScope();
 
@@ -29,6 +30,18 @@ public static class DbSeeder
             // Pas de seed si pas de mot de passe
             logger.LogWarning("Seed STOP : Email ou Password manquant");
             return;
+        }
+
+        // PRIORITES
+        if (!context.Priorite.Any())
+        {
+            context.Priorite.AddRange(
+                new Priorite { Id = 1, Libelle = "Basse" },
+                new Priorite { Id = 2, Libelle = "Moyenne" },
+                new Priorite { Id = 3, Libelle = "Haute" }
+            );
+
+            await context.SaveChangesAsync();
         }
 
         var demoUser = await userManager.FindByEmailAsync(demoEmail);
