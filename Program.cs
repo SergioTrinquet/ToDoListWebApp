@@ -56,8 +56,7 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        var logger = scope.ServiceProvider
-            .GetRequiredService<ILogger<Program>>();
+        //var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
         logger.LogError(ex, "Une erreur a eu lieu pendant la migration de la base de donnée.");
     }
