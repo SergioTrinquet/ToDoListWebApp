@@ -20,6 +20,10 @@ public static class DbSeeder
         var demoEmail = configuration["DemoUser:Email"];
         var demoPassword = configuration["DemoUser:Password"];
 
+        logger.LogInformation("Entrée dans le Seed; Email: {HasEmail}", !string.IsNullOrEmpty(demoEmail));
+        logger.LogInformation("Entrée dans le Seed; Password: {HasPassword}", !string.IsNullOrEmpty(demoPassword));
+
+
         if (string.IsNullOrWhiteSpace(demoEmail) || string.IsNullOrWhiteSpace(demoPassword))
         {
             // Pas de seed si pas de mot de passe

@@ -61,6 +61,9 @@ using (var scope = app.Services.CreateScope())
 // Pour alimenter en prod une base de données avec des données de démo
 if (app.Environment.IsProduction())
 {
+    var logger = app.Services.CreateScope().ServiceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogInformation("app.Environment.IsProduction(): On va charger le Seed");
+
     await DbSeeder.SeedAsync(app.Services);
 }
 
