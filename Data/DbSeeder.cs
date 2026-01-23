@@ -27,6 +27,7 @@ public static class DbSeeder
         if (string.IsNullOrWhiteSpace(demoEmail) || string.IsNullOrWhiteSpace(demoPassword))
         {
             // Pas de seed si pas de mot de passe
+            logger.LogWarning("Seed STOP : Email ou Password manquant");
             return;
         }
 
@@ -44,7 +45,10 @@ public static class DbSeeder
             var result = await userManager.CreateAsync(demoUser, demoPassword);
 
             if (!result.Succeeded)
+            {
+                logger.LogError("Seed STOP : Création user échouée : {Errors}", string.Join(", ", result.Errors.Select(e => e.Description)));
                 return;
+            }
         }
 
         // TASKS DEMO
