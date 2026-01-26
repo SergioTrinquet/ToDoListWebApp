@@ -142,7 +142,7 @@ header {
     justify-content: center;
     align-items: center;
     gap: 0.3rem;
-    transform: translateY(0.5rem);
+    transform: translateY(1.1rem);
 
     transition-property: display scale;
     transition-duration: 0.3s;
@@ -303,6 +303,7 @@ header {
     z-index: 1;
     background-color: var(--body-bgcolor);
     top: var(--sticky-top-position);
+    padding: 1rem 0 1.4rem 0;
 }
 
 #toggle-author-tasks {
@@ -432,6 +433,7 @@ header {
         padding: 0 12px;
         transform: translate(0, calc(18px + 100%));
         z-index: 1;
+
     }
 
     &.is-invalid + .msg-erreur {
