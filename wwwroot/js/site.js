@@ -4,14 +4,14 @@
 // Page /Tasks (Tasks/Index.cshtml)
 const tableBodyTaskIndex = document.querySelector("#body-table-index");
 const modalEdit = document.getElementById('modalEdit');
-const filterInput = document.querySelector("input[name='filterInput']");
 const displayWitnessTasks = document.querySelector("#toggle-author-tasks input[type='checkbox']");
+const filterInput = document.querySelector("input[name='filterInput']");
 const selectSort = document.querySelector("#sortList");
 const minCharToFilter = 3;
 
-if (displayWitnessTasks) {
-    displayWitnessTasks.addEventListener('change', () => fetchTasks());
-}
+
+displayWitnessTasks?.addEventListener('change', () => fetchTasks());
+
 
 // Select pour le tri des tâches
 if (selectSort) { 
@@ -76,7 +76,7 @@ if (filterInput) {
 if (displayWitnessTasks || selectSort) {
     window.addEventListener("scroll", () => {
         const scrollY = window.scrollY || window.pageYOffset;
-        document.querySelector("main").classList.toggle("sticky-header-controls", (scrollY > 80));
+        document.querySelector("body").classList.toggle("sticky-header-controls", (scrollY > 80));
     })
 }
 
@@ -103,8 +103,13 @@ function fetchTasks() {
 }
 
 function setNbTasksLabel() {
-    const nbTasks = tableBodyTaskIndex.querySelector("[data-nb-tasks]")?.dataset.nbTasks || 0;
-    document.querySelector("#nb-tasks").innerHTML = (nbTasks > 0 ? `<span>${nbTasks}</span> tâche${nbTasks > 1 ? "s" : ""}` : "");
+    const nbTasks = tableBodyTaskIndex?.querySelector("[data-nb-tasks]")?.dataset.nbTasks || 0;
+    const nbTasksWrapper = document.querySelectorAll(".nb-tasks");
+    if (nbTasksWrapper) {
+        nbTasksWrapper.forEach(w => {
+            w.innerHTML = (nbTasks > 0 ? `<span>${nbTasks}</span> tâche${nbTasks > 1 ? "s" : ""}` : "");
+        })
+    }
 }
 
 document.addEventListener("DOMContentLoaded", e => setNbTasksLabel());
