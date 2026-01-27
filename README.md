@@ -35,9 +35,9 @@ L'appli a été développée avec la configuration suivante :
 1. Cloner le dépôt :
    ```bash
    git clone https://github.com/SergioTrinquet/ToDoListWebApp.git
-2. Copier le fichier :
+2. Changer le nom du fichier
    'appsettings.Development.json.example'
-   vers
+   en
    'appsettings.Development.json'
 
 3. Adapter le nom de la base de données si nécessaire dans 'appsettings.Development.json' :
