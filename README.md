@@ -51,6 +51,10 @@ L'appli a été développée avec la configuration suivante :
 ```
 Update-Database
 ```
+5. Créer des données dans la base de données SQL Server locale:
+	- Dans la table 'Priorite', créez 3 enregistrements avec dans la colonne 'Libelle' les valeurs 'basse' (Id = 1), 'moyenne' (Id = 2) et 'haute' (Id = 3),
+	- Crée un utilisateur Demo en cliquant sur le menu 's'inscrire' sur l'app et créer un compte avec l'email se trouvant dans le fichier 'appsettings.Development.json', à savoir demo@monapp.test.
+Quand l'utilisateur est créé, vérifiez l'enregistrement si besoin dans la table 'AspNetUsers'.
 
-5. Lancer l'application depuis Visual Studio
+6. Lancer l'application depuis Visual Studio
 
