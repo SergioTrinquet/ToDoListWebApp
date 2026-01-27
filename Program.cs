@@ -6,8 +6,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(
+        connectionString,
+        sql => sql.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: null
+        )
+    ));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -44,22 +53,25 @@ app.MapRazorPages();
 
 using (var scope = app.Services.CreateScope())
 {
+    var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
     try
     {
-        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var db = services.GetRequiredService<ApplicationDbContext>();
         db.Database.Migrate();
+
+        // Pour alimenter en prod une base de données avec des données de démo
+        if (app.Environment.IsProduction())
+        {
+            await DbSeeder.SeedAsync(app.Services);
+        }
     }
     catch (Exception ex)
     {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Une erreur a eu lieu pendant la migration de la base de donnée.");
+        logger.LogError(ex, "Une erreur a eu lieu pendant la migration de la base de donnée ou du seed.");
     }
 }
 
-// Pour alimenter en prod une base de données avec des données de démo
-if (app.Environment.IsProduction())
-{
-    await DbSeeder.SeedAsync(app.Services);
-}
+
 
 app.Run();
